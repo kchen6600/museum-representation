@@ -1,0 +1,27 @@
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 200px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border-radius: 8px;
+    /*  pointer-events: none;	This line needs to be removed */
+}
+
+.table {
+    font-size: 0.7em;
+}
+
+.h7, h7{
+    font-size: 12px;
+}
+
+.axis{
+    font-size: 6px;
+}
+
+#barvis{
+    height:500px;
+}

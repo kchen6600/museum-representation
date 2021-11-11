@@ -1,32 +1,27 @@
+let barVis;
 
+let promises = [
+    d3.json("data/Artworks.json")
+]
 
-d3.json(url).then(jsonData =>{
-    console.log(jsonData);
-});
-
-fetch(url, function (d) {
-    console.log(d)
-})
-    .then(response => response.json())
-    .then(data => {
-        gettingStarted(data)
+Promise.all(promises)
+    .then(function (data){
+        createVis(data)
+    })
+    .catch(function(err){
+        console.log(err)
     });
 
+function createVis(data){
 
+    let artworkData = data[0]
 
-
-// function that gets called once data has been fetched.
-// We're handing over the fetched data to this function.
-// From the data, we're creating the final data structure we need and create a new instance of the StationMap
-function gettingStarted(data) {
-
-    // log data
     console.log(data)
-
-    // create empty data structure
 
     var displayData = [];
 
 
     // Instantiate visualization object
+    barVis = new BarVis("barvis", data);
+
 }
