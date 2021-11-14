@@ -25,3 +25,18 @@
 #barvis{
     height:500px;
 }
+
+#chordvis{
+    height: 500px;
+    border: 1px solid;
+}
+
+#clustervis{
+    height: 500px;
+    border: 1px solid;
+}
+
+#spidervis{
+    height: 500px;
+    border: 1px solid;
+}
