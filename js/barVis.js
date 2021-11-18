@@ -41,7 +41,7 @@ class BarVis {
         vis.svg.append('g')
             .attr('class', 'title bar-title')
             .append('text')
-            .text('Barchart')
+            .text('Male vs Female Artist Representation by Department')
             .attr('transform', `translate(${vis.width / 2}, 10)`)
             .attr('text-anchor', 'middle');
 
@@ -136,20 +136,21 @@ class BarVis {
         vis.svg.select("g.x-axis")
             .call(vis.xAxis);
 
-        vis.bars = vis.svg.selectAll("rect")
+        vis.barsMale = vis.svg.selectAll(".male-bars")
             .data(vis.filteredData);
 
-        vis.bars.exit()
+        vis.barsMale.exit()
             .transition()
             .duration(100)
             .remove();
 
-        vis.bars
+        vis.barsMale
             .enter()
             .append("rect")
+            .attr("class", "male-bars")
             .attr('fill', "blue")
-            .merge(vis.bars)
-            .attr("width", vis.x.bandwidth())
+            .merge(vis.barsMale)
+            .attr("width", vis.x.bandwidth() / 2)
             .attr("height", function(d, i){
                 console.log(d.male);
                 console.log(vis.y(d.male));
@@ -160,38 +161,84 @@ class BarVis {
             .attr("y", function(d, i){
                return vis.y(d.male);
             })
-            // .on('mouseover', function(event, d){
-            //     d3.select(this)
-            //         .attr('stroke-width', '2px')
-            //         .attr('stroke', 'black')
-            //         .attr('fill', 'rgba(173,222,255,0.62)')
-            //     vis.tooltip
-            //         .style("opacity", 1)
-            //         .style("left", event.pageX + 20 + "px")
-            //         .style("top", event.pageY + "px")
-            //         .html(`
-            //          <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
-            //             <h5>${d.state}<h4>
-            //             <h7> Population: ${d.population}</h7>
-            //             <h7> Cases (absolute): ${d.absCases}</h7>
-            //             <h7> Deaths (absolute): ${d.absDeaths}</h7>
-            //             <h7> Cases (relative): ${Math.round((d.relCases) * 100) / 100}%</h7>
-            //             <h7> Deaths (relative): ${Math.round((d.relDeaths) * 100) / 100}%</h7>
-            //          </div>`);
-            // })
-            // .on('mouseout', function(event, d){
-            //     d3.select(this)
-            //         .attr('stroke-width', '0px')
-            //         .attr("fill", "blue")
-            //
-            //     vis.tooltip
-            //         .style("opacity", 0)
-            //         .style("left", 0)
-            //         .style("top", 0)
-            //         .html(``);
-            // })
+            .on('mouseover', function(event, d){
+                d3.select(this)
+                    .attr('stroke-width', '2px')
+                    .attr('stroke', 'black')
+                    .attr('fill', 'rgba(173,222,255,0.62)')
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                     <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+                        <h6>${d.name}<h6>
+                        <h7><b>${d.male}</b> male artist pieces</h7>
+                     </div>`);
+            })
+            .on('mouseout', function(event, d){
+                d3.select(this)
+                    .attr('stroke-width', '0px')
+                    .attr("fill", "blue")
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0)
+                    .style("top", 0)
+                    .html(``);
+            })
         ;
 
+        vis.barsFemale = vis.svg.selectAll(".female-bars")
+            .data(vis.filteredData);
+
+        vis.barsFemale.exit()
+            .transition()
+            .duration(100)
+            .remove();
+
+        vis.barsFemale
+            .enter()
+            .append("rect")
+            .attr("class", "female-bars")
+            .attr('fill', "red")
+            .merge(vis.barsFemale)
+            .attr("width", vis.x.bandwidth() / 2)
+            .attr("height", function(d, i){
+                console.log(d.female);
+                console.log(vis.y(d.female));
+                console.log(vis.height);
+                return vis.height - vis.y(d.female);
+            })
+            .attr("x", d => vis.x(d.name) + (vis.x.bandwidth() / 2))
+            .attr("y", function(d, i){
+                return vis.y(d.female);
+            })
+            .on('mouseover', function(event, d){
+                d3.select(this)
+                    .attr('stroke-width', '2px')
+                    .attr('stroke', 'black')
+                    .attr('fill', 'rgba(255,192,203,0.62)')
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                     <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+                        <h6>${d.name}<h6>
+                        <h7><b>${d.female}</b> female artist pieces</h7>
+                     </div>`);
+            })
+            .on('mouseout', function(event, d){
+                d3.select(this)
+                    .attr('stroke-width', '0px')
+                    .attr("fill", "red")
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0)
+                    .style("top", 0)
+                    .html(``);
+            })
+        ;
 
 
         console.log('here')
