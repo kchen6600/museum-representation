@@ -1,4 +1,5 @@
 let barVis;
+let countVis;
 
 let promises = [
     d3.json("data/Artworks.json")
@@ -20,8 +21,20 @@ function createVis(data){
 
     var displayData = [];
 
+    let eventHandler = {
+        bind: (eventName, handler) => {
+            document.body.addEventListener(eventName, handler);
+        },
+        trigger: (eventName, extraParameters) => {
+            document.body.dispatchEvent(new CustomEvent(eventName, {
+                detail: extraParameters
+            }));
+        }
+    }
+
 
     // Instantiate visualization object
     barVis = new BarVis("barvis", data);
+    countVis = new CountVis("countvis", data, eventHandler);
 
 }

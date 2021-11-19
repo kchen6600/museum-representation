@@ -84,7 +84,7 @@ class BarVis {
                 return item.Department == d
             });
 
-            console.log(filtered);
+            // console.log(filtered);
 
             var malecount = 0;
             var femalecount = 0;
@@ -109,7 +109,7 @@ class BarVis {
             vis.filteredData.push(dept);
         });
 
-        console.log(vis.filteredData);
+        //console.log(vis.filteredData);
 
         vis.updateVis()
 
@@ -152,9 +152,6 @@ class BarVis {
             .merge(vis.barsMale)
             .attr("width", vis.x.bandwidth() / 2)
             .attr("height", function(d, i){
-                console.log(d.male);
-                console.log(vis.y(d.male));
-                console.log(vis.height);
                 return vis.height - vis.y(d.male);
             })
             .attr("x", d => vis.x(d.name))
@@ -204,9 +201,6 @@ class BarVis {
             .merge(vis.barsFemale)
             .attr("width", vis.x.bandwidth() / 2)
             .attr("height", function(d, i){
-                console.log(d.female);
-                console.log(vis.y(d.female));
-                console.log(vis.height);
                 return vis.height - vis.y(d.female);
             })
             .attr("x", d => vis.x(d.name) + (vis.x.bandwidth() / 2))
