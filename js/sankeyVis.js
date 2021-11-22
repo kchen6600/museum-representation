@@ -18,15 +18,38 @@ class SankeyVis {
 
         console.log("data", vis.data)
 
+        vis.data.forEach(function(d, i) {
+            d.Nationality = d.Nationality[0];
+            if (d.Nationality == "") {
+                d.Nationality = undefined;
+            }
+            d.Gender = d.Gender[0];
+            if (d.Gender == "Female" || d.Gender == "female") {
+                d.Gender = "Female";
+            } else if (d.Gender == "Male" || d.Gender == "male") {
+                d.Gender = "Male";
+            } else if (d.Gender == "Non-Binary" || d.Gender == "Non-binary" || d.Gender == "" || d.Gender == undefined) {
+                d.Gender = "Non-Binary";
+            }
+
+        })
+
         vis.male = [];
         // Illustrated Book, Photograph, Design, Publication, Print, Drawing, Multiple, Installation, Video, Film, Architecture, Sculpture, Audio, Graphic Design, Work on Paper, Ephemera, Poster, Software, Furniture and Interiors
         vis.maleClassification = [0, 0, 0, 0];
         vis.female = [];
         vis.femaleClassification = [0, 0, 0, 0];
+        // let genderGroup = vis.groupBy(vis.data,"Gender");
+        // let classificationGroup = vis.groupBy(vis.data,"Classification");
+        // let nationalityGroup = vis.groupBy(vis.data, "Nationality")
+
+        // console.log("gender", genderGroup)
+        // console.log("classification", classificationGroup)
+        // console.log("nationality", nationalityGroup)
 
         (vis.data).forEach(function(d, i){
 
-            if (d.Gender[0] == "Male"){
+            if (d.Gender == "Male"){
                 vis.male.push(d);
                 if (d.Classification == "Illustrated Book") {
                     let current = vis.maleClassification[0]
@@ -41,7 +64,7 @@ class SankeyVis {
                     let current = vis.maleClassification[3]
                     vis.maleClassification[3] = current + 1;
                 }
-            } else if (d.Gender[0] == "Female"){
+            } else if (d.Gender == "Female"){
                 vis.female.push(d);
                 if (d.Classification == "Illustrated Book") {
                     let current = vis.femaleClassification[0]
@@ -86,10 +109,12 @@ class SankeyVis {
                 { source: "Female", target: "Photograph", value: vis.femaleClassification[1] },
                 { source: "Female", target: "Design", value: vis.femaleClassification[2] },
                 { source: "Female", target: "Publication", value: vis.femaleClassification[3] },
-                { source: "Illustrated Book", target: "American", value: 20000 },
-                { source: "Photograph", target: "American", value: 15000 },
+                { source: "Illustrated Book", target: "American", value: 18000 },
+                { source: "Illustrated Book", target: "Japanese", value: 9000 },
+                { source: "Photograph", target: "Japanese", value: 12000 },
                 { source: "Design", target: "French", value: 6000 },
-                // { source: "Publication", target: "Japanese", value: 2000 },
+                { source: "Design", target: "American", value: 3000 },
+                { source: "Photograph", target: "Japanese", value: 17000 },
             ]
         }
 
@@ -132,24 +157,61 @@ class SankeyVis {
             .attr("fill", "none")
             .attr("stroke", "#D3D3D3")
             .attr("stroke-width", d => d.width)
-            .attr("stoke-opacity", 0.5);
+            .attr("stroke-opacity", 0.5);
+
+        vis.colorScale = d3.interpolateRainbow;
 
         vis.nodes = vis.svg
             .append("g")
             .classed("nodes", true)
             .selectAll("rect")
             .data(vis.graph.nodes)
-            .enter()
-            .append("rect")
+            .enter();
+
+        vis.nodes.append("rect")
             .classed("node", true)
             .attr("x", d => d.x0)
             .attr("y", d => d.y0)
             .attr("width", d => d.x1 - d.x0)
             .attr("height", d => d.y1 - d.y0)
-            .attr("fill", "blue")
+            // .attr("fill", (d,i) => { console.log(d.id) })
+            .attr("fill", "#74cfe9")
             .attr("opacity", 0.8);
 
+        // add in the title for the nodes
+        vis.nodes.append("text")
+            .attr("x", d => {
+                if (d.x0 > vis.width / 2) {
+                    return d.x0 - vis.sankey.nodeWidth()*2 - 40
+                } else {
+                    return d.x0 + vis.sankey.nodeWidth() + 10
+                }
+
+            })
+            .attr("y", d => d.y0 + 50)
+            .attr("dy", ".35em")
+            // .attr("text-anchor", "end")
+            .attr("text-anchor", d => {
+                if (d.x0 < vis.width / 2) {
+                    console.log("LESS THAN", d.id)
+                    return "start"
+                } else {
+                    console.log("MORE", d.id)
+                    return "end"
+                }
+                    // ? "start" : "end"
+            })
+            .attr("transform", null)
+            .text(d => d.id)
+            .attr("text-anchor", "start");
+
         this.wrangleData();
+    }
+
+    color(index) {
+        let ratio = index / (this.sankeyData.nodes.length - 1.0);
+        console.log(this.colorScale(ratio))
+        return this.colorScale(ratio);
     }
 
     wrangleData() {
@@ -161,4 +223,23 @@ class SankeyVis {
     updateVis() {
         let vis = this;
     }
+
+    groupBy(arr, criteria) {
+        let newObj = arr.reduce(function(acc, currentValue) {
+            if (!acc[currentValue[criteria]]) {
+                acc[currentValue[criteria]] = [];
+            }
+            acc[currentValue[criteria]].push(currentValue);
+            return acc;
+        }, {});
+        return newObj;
+    }
+
+
+    // groupBy(list, key) {
+    //     return list.reduce(function(rv, x) {
+    //         (rv[x[key]] = rv[x[key]] || []).push(x);
+    //         return rv;
+    //     }, {});
+    // };
 }

@@ -20,7 +20,7 @@ function createVis(data){
 
     console.log(data)
 
-    var displayData = [];
+    let displayData = [];
 
     let eventHandler = {
         bind: (eventName, handler) => {

@@ -28,7 +28,7 @@
 
 #sankeyvis{
     height: 500px;
-    border: 1px solid;
+    margin-top: 50px;
 }
 
 #clustervis{
