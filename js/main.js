@@ -39,6 +39,6 @@ function createVis(data){
     barVis = new BarVis("barvis", data);
     countVis = new CountVis("countvis", data, eventHandler);
     sankeyVis = new SankeyVis("sankeyvis", data);
-    spiderVis = new SpiderVis("spidervis");
+    spiderVis = new SpiderVis("spidervis", data);
 
 }
