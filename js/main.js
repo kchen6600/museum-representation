@@ -1,6 +1,7 @@
 let barVis;
 let countVis;
 let sankeyVis;
+let spiderVis;
 
 let promises = [
     d3.json("data/Artworks.json")
@@ -38,5 +39,6 @@ function createVis(data){
     barVis = new BarVis("barvis", data);
     countVis = new CountVis("countvis", data, eventHandler);
     sankeyVis = new SankeyVis("sankeyvis", data);
+    spiderVis = new SpiderVis("spidervis");
 
 }
