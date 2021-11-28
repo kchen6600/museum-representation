@@ -13,15 +13,27 @@ class SankeyVis {
         this.initVis()
     }
 
+    groupBy(arr, criteria) {
+        let newObj = arr.reduce(function(acc, currentValue) {
+            if (!acc[currentValue[criteria]]) {
+                acc[currentValue[criteria]] = [];
+            }
+            acc[currentValue[criteria]].push(currentValue);
+            return acc;
+        }, {});
+        return newObj;
+    }
+
     initVis() {
         let vis = this;
 
-        console.log("data", vis.data)
+        // console.log("data", vis.data)
 
+        // standardize fields
         vis.data.forEach(function(d, i) {
             d.Nationality = d.Nationality[0];
-            if (d.Nationality == "") {
-                d.Nationality = undefined;
+            if (d.Nationality == undefined) {
+                d.Nationality = "Nationality unknown";
             }
             d.Gender = d.Gender[0];
             if (d.Gender == "Female" || d.Gender == "female") {
@@ -34,89 +46,343 @@ class SankeyVis {
 
         })
 
-        vis.male = [];
-        // Illustrated Book, Photograph, Design, Publication, Print, Drawing, Multiple, Installation, Video, Film, Architecture, Sculpture, Audio, Graphic Design, Work on Paper, Ephemera, Poster, Software, Furniture and Interiors
-        vis.maleClassification = [0, 0, 0, 0];
-        vis.female = [];
-        vis.femaleClassification = [0, 0, 0, 0];
-        // let genderGroup = vis.groupBy(vis.data,"Gender");
-        // let classificationGroup = vis.groupBy(vis.data,"Classification");
-        // let nationalityGroup = vis.groupBy(vis.data, "Nationality")
+        vis.genderGroup = this.groupBy(vis.data,"Gender");
 
-        // console.log("gender", genderGroup)
-        // console.log("classification", classificationGroup)
-        // console.log("nationality", nationalityGroup)
+        vis.nationalityGroupMale = this.groupBy(vis.genderGroup["Male"],"Nationality");
+        vis.nationalityGroupFemale = this.groupBy(vis.genderGroup["Female"],"Nationality");
+        vis.nationalityGroupNonbinary = this.groupBy(vis.genderGroup["Non-Binary"],"Nationality");
 
-        (vis.data).forEach(function(d, i){
+        vis.CLEANnationalityGroupMale = {}
+        vis.CLEANnationalityGroupFemale = {}
+        vis.CLEANnationalityGroupNonbinary = {}
 
-            if (d.Gender == "Male"){
-                vis.male.push(d);
-                if (d.Classification == "Illustrated Book") {
-                    let current = vis.maleClassification[0]
-                    vis.maleClassification[0] = current + 1;
-                } else if (d.Classification == "Photograph") {
-                    let current = vis.maleClassification[1]
-                    vis.maleClassification[1] = current + 1;
-                } else if (d.Classification == "Design") {
-                    let current = vis.maleClassification[2]
-                    vis.maleClassification[2] = current + 1;
-                } else if (d.Classification == "Publication") {
-                    let current = vis.maleClassification[3]
-                    vis.maleClassification[3] = current + 1;
-                }
-            } else if (d.Gender == "Female"){
-                vis.female.push(d);
-                if (d.Classification == "Illustrated Book") {
-                    let current = vis.femaleClassification[0]
-                    vis.femaleClassification[0] = current + 1;
-                } else if (d.Classification == "Photograph") {
-                    let current = vis.femaleClassification[1]
-                    vis.femaleClassification[1] = current + 1;
-                } else if (d.Classification == "Design") {
-                    let current = vis.femaleClassification[2]
-                    vis.femaleClassification[2] = current + 1;
-                } else if (d.Classification == "Publication") {
-                    let current = vis.femaleClassification[3]
-                    vis.femaleClassification[3] = current + 1;
+        vis.French = []
+        vis.American = []
+        vis.German = []
+        vis.Dutch = []
+        vis.Italian = []
+        vis.British = []
+        vis.Japanese = []
+        vis.Swiss = []
+        vis.Spanish = []
+        vis.Russian = []
+        vis.Belgian = []
+        vis.Mexican = []
+        vis["Nationality unknown"] = []
+
+        // CLEANING nationalities
+        for (let attr in vis.nationalityGroupMale){
+            if (vis.nationalityGroupMale[attr].length > 1000) {
+                vis.CLEANnationalityGroupMale[attr] = vis.nationalityGroupMale[attr];
+                for (let i = 0; i < vis.nationalityGroupMale[attr].length; i++) {
+                    vis[attr].push(vis.nationalityGroupMale[attr][i]);
                 }
             }
+        }
+        for (let attr in vis.nationalityGroupFemale){
+            if (vis.nationalityGroupFemale[attr].length > 1000) {
+                vis.CLEANnationalityGroupFemale[attr] = vis.nationalityGroupFemale[attr];
+                for (let i = 0; i < vis.nationalityGroupFemale[attr].length; i++) {
+                    vis[attr].push(vis.nationalityGroupFemale[attr][i]);
+                }
+            }
+        }
+        for (let attr in vis.nationalityGroupNonbinary){
+            if (vis.nationalityGroupNonbinary[attr].length > 1000) {
+                vis.CLEANnationalityGroupNonbinary[attr] = vis.nationalityGroupNonbinary[attr];
+                for (let i = 0; i < vis.nationalityGroupNonbinary[attr].length; i++) {
+                    vis[attr].push(vis.nationalityGroupNonbinary[attr][i]);
+                }
+            }
+        }
 
-        })
+        vis.classificationFrench = this.groupBy(vis.French,"Classification");
+        vis.classificationAmerican = this.groupBy(vis.American,"Classification");
+        vis.classificationGerman = this.groupBy(vis.German,"Classification");
+        vis.classificationDutch = this.groupBy(vis.Dutch,"Classification");
+        vis.classificationItalian = this.groupBy(vis.Italian,"Classification");
+        vis.classificationBritish = this.groupBy(vis.British,"Classification");
+        vis.classificationJapanese = this.groupBy(vis.Japanese,"Classification");
+        vis.classificationSwiss = this.groupBy(vis.Swiss,"Classification");
+        vis.classificationSpanish = this.groupBy(vis.Spanish,"Classification");
+        vis.classificationRussian = this.groupBy(vis.Russian,"Classification");
+        vis.classificationBelgian = this.groupBy(vis.Belgian,"Classification");
+        vis.classificationMexican = this.groupBy(vis.Mexican,"Classification");
+        vis.classificationUnknown = this.groupBy(vis["Nationality unknown"],"Classification");
 
-        // console.log("male", vis.male.length)
-        // console.log("female", vis.female.length)
+        vis.CLEANclassificationGroupMale = {}
+        vis.CLEANclassificationGroupFemale = {}
+        vis.CLEANclassificationGroupNonbinary = {}
 
-        // nodes -> gender -> classification -> nationality
+        vis.CLEANfrench = {}
+        vis.CLEANamerican = {}
+        vis.CLEANgerman = {}
+        vis.CLEANdutch = {}
+        vis.CLEANitalian = {}
+        vis.CLEANbritish = {}
+        vis.CLEANjapanese = {}
+        vis.CLEANswiss = {}
+        vis.CLEANspanish = {}
+        vis.CLEANrussian = {}
+        vis.CLEANbelgian = {}
+        vis.CLEANmexican = {}
+        vis.CLEANunknown = {}
+
+        // CLEANING classifications
+        for (let attr in vis.classificationFrench){
+            if (vis.classificationFrench[attr].length > 100) {
+                vis.CLEANfrench[attr] = vis.classificationFrench[attr];
+            }
+        }
+        for (let attr in vis.classificationAmerican){
+            if (vis.classificationAmerican[attr].length > 100) {
+                vis.CLEANamerican[attr] = vis.classificationAmerican[attr];
+            }
+        }
+        for (let attr in vis.classificationGerman){
+            if (vis.classificationGerman[attr].length > 100) {
+                vis.CLEANgerman[attr] = vis.classificationGerman[attr];
+            }
+        }
+        for (let attr in vis.classificationDutch){
+            if (vis.classificationDutch[attr].length > 100) {
+                vis.CLEANdutch[attr] = vis.classificationDutch[attr];
+            }
+        }
+        for (let attr in vis.classificationItalian){
+            if (vis.classificationItalian[attr].length > 100) {
+                vis.CLEANitalian[attr] = vis.classificationItalian[attr];
+            }
+        }
+        for (let attr in vis.classificationBritish){
+            if (vis.classificationBritish[attr].length > 100) {
+                vis.CLEANbritish[attr] = vis.classificationBritish[attr];
+            }
+        }
+        for (let attr in vis.classificationJapanese){
+            if (vis.classificationJapanese[attr].length > 100) {
+                vis.CLEANjapanese[attr] = vis.classificationJapanese[attr];
+            }
+        }
+        for (let attr in vis.classificationSwiss){
+            if (vis.classificationSwiss[attr].length > 100) {
+                vis.CLEANswiss[attr] = vis.classificationSwiss[attr];
+            }
+        }
+        for (let attr in vis.classificationSpanish){
+            if (vis.classificationSpanish[attr].length > 100) {
+                vis.CLEANspanish[attr] = vis.classificationSpanish[attr];
+            }
+        }
+        for (let attr in vis.classificationRussian){
+            if (vis.classificationRussian[attr].length > 100) {
+                vis.CLEANrussian[attr] = vis.classificationRussian[attr];
+            }
+        }
+        for (let attr in vis.classificationBelgian){
+            if (vis.classificationBelgian[attr].length > 100) {
+                vis.CLEANbelgian[attr] = vis.classificationBelgian[attr];
+            }
+        }
+        for (let attr in vis.classificationMexican){
+            if (vis.classificationMexican[attr].length > 100) {
+                vis.CLEANmexican[attr] = vis.classificationMexican[attr];
+            }
+        }
+        for (let attr in vis.classificationUnknown){
+            if (vis.classificationUnknown[attr].length > 100) {
+                vis.CLEANunknown[attr] = vis.classificationUnknown[attr];
+            }
+        }
+
+        // flow: gender -> nationality -> classification
+
+        vis.nodes = []
+        // nodes: genders
+        for (let attr in vis.genderGroup) {
+            vis.nodes.push({ id: attr})
+        }
+        // nodes: nationalities
+        let nationSet = new Set()
+        for (let attr in vis.CLEANnationalityGroupMale) {
+            nationSet.add(attr)
+            vis.nodes.push({ id: attr})
+        }
+        for (let attr in vis.CLEANnationalityGroupFemale) {
+            if (nationSet.has(attr)) {
+                continue
+            } else {
+                nationSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANnationalityGroupNonbinary) {
+            if (nationSet.has(attr)) {
+                continue
+            } else {
+                nationSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        // nodes: classifications
+        let classSet = new Set()
+        for (let attr in vis.CLEANfrench) {
+            classSet.add(attr)
+            vis.nodes.push({ id: attr})
+        }
+        for (let attr in vis.CLEANamerican) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANgerman) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANdutch) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANitalian) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANbritish) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANjapanese) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANswiss) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANspanish) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANrussian) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANbelgian) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANmexican) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+        for (let attr in vis.CLEANunknown) {
+            if (classSet.has(attr)) {
+                continue
+            } else {
+                classSet.add(attr)
+                vis.nodes.push({ id: attr})
+            }
+        }
+
+        // create links
+        vis.links = []
+        // links: gender to nationality
+        for (let attr in vis.CLEANnationalityGroupMale) {
+            vis.links.push({ source: "Male", target: attr, value: vis.CLEANnationalityGroupMale[attr].length})
+        }
+        for (let attr in vis.CLEANnationalityGroupFemale) {
+            vis.links.push({ source: "Female", target: attr, value: vis.CLEANnationalityGroupFemale[attr].length})
+        }
+        for (let attr in vis.CLEANnationalityGroupNonbinary) {
+            vis.links.push({ source: "Non-Binary", target: attr, value: vis.CLEANnationalityGroupNonbinary[attr].length})
+        }
+        // links: nationality to classification
+        for (let attr in vis.CLEANfrench) {
+            vis.links.push({ source: "French", target: attr, value: vis.CLEANfrench[attr].length})
+        }
+        for (let attr in vis.CLEANamerican) {
+            vis.links.push({source: "American", target: attr, value: vis.CLEANamerican[attr].length})
+        }
+        for (let attr in vis.CLEANgerman) {
+            vis.links.push({source: "German", target: attr, value: vis.CLEANgerman[attr].length})
+        }
+        for (let attr in vis.CLEANdutch) {
+            vis.links.push({source: "Dutch", target: attr, value: vis.CLEANdutch[attr].length})
+        }
+        for (let attr in vis.CLEANitalian) {
+            vis.links.push({source: "Italian", target: attr, value: vis.CLEANitalian[attr].length})
+        }
+        for (let attr in vis.CLEANbritish) {
+            vis.links.push({source: "British", target: attr, value: vis.CLEANbritish[attr].length})
+        }
+        for (let attr in vis.CLEANswiss) {
+            vis.links.push({source: "Swiss", target: attr, value: vis.CLEANswiss[attr].length})
+        }
+        for (let attr in vis.CLEANspanish) {
+            vis.links.push({source: "Spanish", target: attr, value: vis.CLEANspanish[attr].length})
+        }
+        for (let attr in vis.CLEANrussian) {
+            vis.links.push({source: "Russian", target: attr, value: vis.CLEANrussian[attr].length})
+        }
+        for (let attr in vis.CLEANbelgian) {
+            vis.links.push({source: "Belgian", target: attr, value: vis.CLEANbelgian[attr].length})
+        }
+        for (let attr in vis.CLEANmexican) {
+            vis.links.push({source: "Mexican", target: attr, value: vis.CLEANmexican[attr].length})
+        }
+        for (let attr in vis.CLEANunknown) {
+            vis.links.push({ source: "Nationality unknown", target: attr, value: vis.CLEANunknown[attr].length})
+        }
 
         vis.sankeyData = {
-            nodes: [
-                { id: "Male" },
-                { id: "Female" },
-                { id: "Illustrated Book" },
-                { id: "Photograph" },
-                { id: "Design" },
-                { id: "Publication" },
-                { id: "American" },
-                { id: "French" },
-                { id: "Japanese" }
-            ],
-            links: [
-                { source: "Male", target: "Illustrated Book", value: vis.maleClassification[0] },
-                { source: "Male", target: "Photograph", value: vis.maleClassification[1] },
-                { source: "Male", target: "Design", value: vis.maleClassification[2] },
-                { source: "Male", target: "Publication", value: vis.maleClassification[3] },
-                { source: "Female", target: "Illustrated Book", value: vis.femaleClassification[0] },
-                { source: "Female", target: "Photograph", value: vis.femaleClassification[1] },
-                { source: "Female", target: "Design", value: vis.femaleClassification[2] },
-                { source: "Female", target: "Publication", value: vis.femaleClassification[3] },
-                { source: "Illustrated Book", target: "American", value: 18000 },
-                { source: "Illustrated Book", target: "Japanese", value: 9000 },
-                { source: "Photograph", target: "Japanese", value: 12000 },
-                { source: "Design", target: "French", value: 6000 },
-                { source: "Design", target: "American", value: 3000 },
-                { source: "Photograph", target: "Japanese", value: 17000 },
-            ]
+            nodes: vis.nodes,
+            links: vis.links
         }
+
+        // console.log("SANKEY DATA", vis.sankeyData)
 
         vis.margin = {top: 20, right: 20, bottom: 20, left: 40};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
@@ -133,7 +399,7 @@ class SankeyVis {
         vis.svg.append('g')
             .attr('class', 'title bar-title')
             .append('text')
-            .text('Sankey Diagram of Attributes')
+            .text('Gender, Nationality, and Art Classification Relationships')
             .attr('transform', `translate(${vis.width / 2}, -5)`)
             .attr('text-anchor', 'middle');
 
@@ -144,6 +410,14 @@ class SankeyVis {
             .nodePadding(10)
             .nodeAlign(d3.sankeyCenter);
         vis.graph = vis.sankey(vis.sankeyData);
+
+        vis.x = d3.scaleLinear()
+            .range([0, vis.width])
+            .domain(d3.extent(this.getFields(vis.graph.nodes, "x0")));
+
+        vis.y = d3.scaleLinear()
+            .range([vis.height, 0])
+            .domain(d3.extent(this.getFields(vis.graph.nodes, "y0")));
 
         vis.links = vis.svg
             .append("g")
@@ -182,35 +456,23 @@ class SankeyVis {
         vis.nodes.append("text")
             .attr("x", d => {
                 if (d.x0 > vis.width / 2) {
-                    return d.x0 - vis.sankey.nodeWidth()*2 - 40
+                    return d.x0 - vis.sankey.nodeWidth() + 10
                 } else {
                     return d.x0 + vis.sankey.nodeWidth() + 10
                 }
-
             })
-            .attr("y", d => d.y0 + 50)
+            .attr("y", d => ((d.y1 - d.y0) / 2) + d.y0)
             .attr("dy", ".35em")
-            // .attr("text-anchor", "end")
-            .attr("text-anchor", d => {
-                if (d.x0 < vis.width / 2) {
-                    console.log("LESS THAN", d.id)
-                    return "start"
-                } else {
-                    console.log("MORE", d.id)
-                    return "end"
-                }
-                    // ? "start" : "end"
-            })
+            .attr("text-anchor", d => (d.x0 < vis.width / 2) ? "start" : "end")
             .attr("transform", null)
-            .text(d => d.id)
-            .attr("text-anchor", "start");
+            .text(d => d.id);
 
         this.wrangleData();
     }
 
     color(index) {
         let ratio = index / (this.sankeyData.nodes.length - 1.0);
-        console.log(this.colorScale(ratio))
+        // console.log(this.colorScale(ratio))
         return this.colorScale(ratio);
     }
 
@@ -224,15 +486,11 @@ class SankeyVis {
         let vis = this;
     }
 
-    groupBy(arr, criteria) {
-        let newObj = arr.reduce(function(acc, currentValue) {
-            if (!acc[currentValue[criteria]]) {
-                acc[currentValue[criteria]] = [];
-            }
-            acc[currentValue[criteria]].push(currentValue);
-            return acc;
-        }, {});
-        return newObj;
+    getFields(input, field) {
+        let output = [];
+        for (let i=0; i < input.length ; ++i)
+            output.push(input[i][field]);
+        return output;
     }
 
 
