@@ -431,7 +431,32 @@ class SankeyVis {
             .attr("fill", "none")
             .attr("stroke", "#D3D3D3")
             .attr("stroke-width", d => d.width)
-            .attr("stroke-opacity", 0.5);
+            .attr("stroke-opacity", 0.5)
+            .on("mouseover", function(d) {
+                if (d.toElement.__data__.source.layer == 0) {
+                    let target = d.toElement.__data__.target.id;
+                    let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id != target);
+                    for (let i = 0; i < relatedLinks.length; i++) {
+                        d3.select(relatedLinks[i]).attr("stroke-opacity", 0.1)
+                    }
+                } else {
+                    let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]);
+                    for (let i = 0; i < relatedLinks.length; i++) {
+                        d3.select(relatedLinks[i]).attr("stroke-opacity", 0.1)
+                    }
+                }
+                d3.select(this).attr("stroke-opacity", 0.5);
+            })
+            .on("mouseleave", function(d) {
+                // d3.select(this).attr("stroke-opacity", 0.5);
+                if (d.fromElement.__data__.source.layer == 0) {
+                    let target = d.fromElement.__data__.target.id;
+                    let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id != target);
+                    for (let i = 0; i < relatedLinks.length; i++) {
+                        d3.select(relatedLinks[i]).attr("stroke-opacity", 0.5)
+                    }
+                }
+            });
 
         vis.colorScale = d3.interpolateRainbow;
 
