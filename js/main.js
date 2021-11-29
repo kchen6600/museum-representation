@@ -41,4 +41,13 @@ function createVis(data){
     sankeyVis = new SankeyVis("sankeyvis", data);
     spiderVis = new SpiderVis("spidervis", data);
 
+    eventHandler.bind("selectionChanged", function(event){
+        console.log(event);
+        console.log(event.detail);
+        let rangeStart = event.detail[0];
+        let rangeEnd = event.detail[1];
+        countVis.onSelectionChange(rangeStart, rangeEnd);
+    });
+
+
 }

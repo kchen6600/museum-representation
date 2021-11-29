@@ -433,28 +433,51 @@ class SankeyVis {
             .attr("stroke-width", d => d.width)
             .attr("stroke-opacity", 0.5)
             .on("mouseover", function(d) {
+                let unRelatedLinks;
+                let unRelatedNodes = []
+                let nodeSet = new Set()
                 if (d.toElement.__data__.source.layer == 0) {
                     let target = d.toElement.__data__.target.id;
-                    let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id != target);
-                    for (let i = 0; i < relatedLinks.length; i++) {
-                        d3.select(relatedLinks[i]).attr("stroke-opacity", 0.1)
+                    unRelatedLinks = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id != target);
+                    for (let i = 0; i < unRelatedLinks.length; i++) {
+                        d3.select(unRelatedLinks[i]).attr("stroke-opacity", 0.1)
                     }
+                    unRelatedNodes = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id == target);
+
                 } else {
-                    let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]);
-                    for (let i = 0; i < relatedLinks.length; i++) {
-                        d3.select(relatedLinks[i]).attr("stroke-opacity", 0.1)
+                    unRelatedLinks = Object.values(d3.selectAll(".link")._groups[0]);
+                    for (let i = 0; i < unRelatedLinks.length; i++) {
+                        d3.select(unRelatedLinks[i]).attr("stroke-opacity", 0.1)
+                    }
+                    nodeSet.add(d.toElement.__data__.target.id);
+                }
+
+                nodeSet.add(d.toElement.__data__.source.id);
+                for (let i = 0; i < unRelatedNodes.length; i++) {
+                    nodeSet.add(unRelatedNodes[i].__data__.source.id)
+                    nodeSet.add(unRelatedNodes[i].__data__.target.id)
+                }
+                let allNodes = Object.values(d3.selectAll(".node")._groups[0])
+                let allText = Object.values(d3.selectAll(".text")._groups[0])
+                for (let i = 0; i < allNodes.length; i++) {
+                    if (nodeSet.has(allNodes[i].id) == false) {
+                        d3.select(allNodes[i]).attr("opacity", 0.1)
+                        d3.select(allText[i]).attr("opacity", 0.1)
                     }
                 }
                 d3.select(this).attr("stroke-opacity", 0.5);
             })
             .on("mouseleave", function(d) {
-                // d3.select(this).attr("stroke-opacity", 0.5);
-                if (d.fromElement.__data__.source.layer == 0) {
-                    let target = d.fromElement.__data__.target.id;
-                    let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id != target);
-                    for (let i = 0; i < relatedLinks.length; i++) {
-                        d3.select(relatedLinks[i]).attr("stroke-opacity", 0.5)
-                    }
+                let target = d.fromElement.__data__.target.id;
+                let relatedLinks = Object.values(d3.selectAll(".link")._groups[0]).filter(d => d.__data__.source.id != target);
+                for (let i = 0; i < relatedLinks.length; i++) {
+                    d3.select(relatedLinks[i]).attr("stroke-opacity", 0.5)
+                }
+                let allNodes = Object.values(d3.selectAll(".node")._groups[0])
+                let allText = Object.values(d3.selectAll(".text")._groups[0])
+                for (let i = 0; i < allNodes.length; i++) {
+                    d3.select(allNodes[i]).attr("opacity", 0.8)
+                    d3.select(allText[i]).attr("opacity", 1)
                 }
             });
 
@@ -475,10 +498,12 @@ class SankeyVis {
             .attr("height", d => d.y1 - d.y0)
             // .attr("fill", (d,i) => { console.log(d.id) })
             .attr("fill", "#74cfe9")
-            .attr("opacity", 0.8);
+            .attr("opacity", 0.8)
+            .attr("id", d => d.id);
 
         // add in the title for the nodes
         vis.nodes.append("text")
+            .classed("text", true)
             .attr("x", d => {
                 if (d.x0 > vis.width / 2) {
                     return d.x0 - vis.sankey.nodeWidth() + 10
@@ -490,6 +515,7 @@ class SankeyVis {
             .attr("dy", ".35em")
             .attr("text-anchor", d => (d.x0 < vis.width / 2) ? "start" : "end")
             .attr("transform", null)
+            .attr("id", d => d.id)
             .text(d => d.id);
 
         this.wrangleData();
