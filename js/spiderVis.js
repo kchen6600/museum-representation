@@ -21,21 +21,10 @@ class SpiderVis {
         })
         console.log("filtered data:", vis.filtered);
 
-        let exdata = [];
-        let features = ["A", "B", "C", "D", "E", "F"];
-//generate the data
-        for (var i = 0; i < 3; i++) {
-            var point = {}
-            //each feature will be a random number from 1-9
-            features.forEach(f => point[f] = 1 + Math.random() * 8);
-            exdata.push(point);
-        }
-        console.log(exdata);
 
         // separate out all nationalities
         vis.nationality = [];
         vis.filtered.forEach(function (d, i) {
-            var personCount = 0;
 
             if (vis.nationality.includes(d.Nationality) != true) {
                 var country = d.Nationality;
@@ -49,30 +38,35 @@ class SpiderVis {
         })
 
         vis.natData = []
-        var countryInfo = {}
-        var count = 1;
-        vis.nationality.forEach(f => countryInfo[f] = 1 + Math.random() * 8)
+        var countryInfo = []
+
+        vis.nationality.forEach(function(f,i){
+            var pplCount = 0;
+            vis.filtered.forEach(function(d){
+                if(d.Nationality == f){
+                    pplCount += 1;
+                }
+            })
+            countryInfo[f] = pplCount;
+        })
+        console.log("country info", countryInfo);
 
         vis.natData.push(countryInfo);
 
-        // vis.natData = vis.natData[0];
-
-
         console.log("Nationality array", vis.natData);
-
 
         // create the base of the spider vis
         vis.svg = d3.select("#spidervis").append("svg")
-            .attr("width", 600)
-            .attr("height", 600)
+            .attr("width", 800)
+            .attr("height", 800)
             .attr("stroke", "gray");
 
         vis.radialScale = d3.scaleLinear()
-            .domain([0, 10])
+            .domain([0, 15000])
             .range([0, 250]);
 
         // append the ticks for the count TO BE CHANGED
-        vis.ticks = [2, 4, 6, 8, 10];
+        vis.ticks = [3000, 6000, 9000, 12000, 15000];
 
         vis.ticks.forEach(t =>
             vis.svg.append("circle")
@@ -86,7 +80,7 @@ class SpiderVis {
         vis.ticks.forEach(t =>
             vis.svg.append("text")
                 .attr("x", 305)
-                .attr("y", 300 - vis.radialScale(t))
+                .attr("y",  300-vis.radialScale(t))
                 .text(t.toString())
         );
 
@@ -97,11 +91,11 @@ class SpiderVis {
             return {"x": 300 + x, "y": 300 - y};
         }
 
-        for (var i = 0; i < vis.nationality.length; i++) {
+        for (var i = 0; i < 8; i++) {
             let ft_name = vis.nationality[i];
-            let angle = (Math.PI / 2) + (2 * Math.PI * i / vis.nationality.length);
-            let line_coordinate = angleToCoordinate(angle, 10);
-            let label_coordinate = angleToCoordinate(angle, 10.5);
+            let angle = (Math.PI / 2) + (2 * Math.PI * i / 8);
+            let line_coordinate = angleToCoordinate(angle, 15000);
+            let label_coordinate = angleToCoordinate(angle, 15750);
 
             //draw axis line
             vis.svg.append("line")
@@ -125,22 +119,24 @@ class SpiderVis {
         vis.line = d3.line()
             .x(d => d.x)
             .y(d => d.y);
-        vis.colors = ["darkorange"];
+        vis.colors = ["pink"];
 
 
         function getPathCoordinates(data_point) {
             let coordinates = [];
-            for (var i = 0; i < vis.nationality.length; i++) {
+            for (var i = 0; i < 8; i++) {
                 let ft_name = vis.nationality[i];
-                let angle = (Math.PI / 2) + (2 * Math.PI * i / vis.nationality.length);
+                let angle = (Math.PI / 2) + (2 * Math.PI * i / 8);
                 coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
             }
             return coordinates;
         }
-        for (var i = 0; i < 70; i++) {
+        for (var i = 0; i < 1 ; i++) {
             let d = vis.natData[i];
             let color = vis.colors[i];
             let coordinates = getPathCoordinates(d);
+            console.log("coord", coordinates);
+
 
             //     //draw the path element
                 vis.svg.append("path")
