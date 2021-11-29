@@ -15,26 +15,58 @@ class SpiderVis {
     initVis() {
         let vis = this;
 
+        console.log("original data:", vis.data);
+        vis.filtered = (vis.data)[0].filter(function (d) {
+            return d.Gender == "Female";
+        })
+        console.log("filtered data:", vis.filtered);
+
+
         // separate out all nationalities
         vis.nationality = [];
-        (vis.data)[0].forEach(function (d, i) {
+        vis.filtered.forEach(function (d, i) {
+
             if (vis.nationality.includes(d.Nationality) != true) {
-                vis.nationality.push(d.Nationality);
+                var country = d.Nationality;
+                vis.nationality.push(country);
             }
         })
-        console.log(vis.nationality);
+        vis.nationality.forEach(function (d, i) {
+            if (vis.nationality[i] === undefined) {
+                vis.nationality[i] = "Unknown";
+            }
+        })
+
+        vis.natData = []
+        var countryInfo = []
+
+        vis.nationality.forEach(function(f,i){
+            var pplCount = 0;
+            vis.filtered.forEach(function(d){
+                if(d.Nationality == f){
+                    pplCount += 1;
+                }
+            })
+            countryInfo[f] = pplCount;
+        })
+        console.log("country info", countryInfo);
+
+        vis.natData.push(countryInfo);
+
+        console.log("Nationality array", vis.natData);
 
         // create the base of the spider vis
         vis.svg = d3.select("#spidervis").append("svg")
-            .attr("width", 600)
-            .attr("height", 600);
+            .attr("width", 800)
+            .attr("height", 800)
+            .attr("stroke", "gray");
 
         vis.radialScale = d3.scaleLinear()
-            .domain([0, 10])
+            .domain([0, 15000])
             .range([0, 250]);
 
         // append the ticks for the count TO BE CHANGED
-        vis.ticks = [2, 4, 6, 8, 10];
+        vis.ticks = [3000, 6000, 9000, 12000, 15000];
 
         vis.ticks.forEach(t =>
             vis.svg.append("circle")
@@ -48,7 +80,7 @@ class SpiderVis {
         vis.ticks.forEach(t =>
             vis.svg.append("text")
                 .attr("x", 305)
-                .attr("y", 300 - vis.radialScale(t))
+                .attr("y",  300-vis.radialScale(t))
                 .text(t.toString())
         );
 
@@ -59,11 +91,11 @@ class SpiderVis {
             return {"x": 300 + x, "y": 300 - y};
         }
 
-        for (var i = 0; i < vis.nationality.length; i++) {
+        for (var i = 0; i < 8; i++) {
             let ft_name = vis.nationality[i];
-            let angle = (Math.PI / 2) + (2 * Math.PI * i / vis.nationality.length);
-            let line_coordinate = angleToCoordinate(angle, 10);
-            let label_coordinate = angleToCoordinate(angle, 10.5);
+            let angle = (Math.PI / 2) + (2 * Math.PI * i / 8);
+            let line_coordinate = angleToCoordinate(angle, 15000);
+            let label_coordinate = angleToCoordinate(angle, 15750);
 
             //draw axis line
             vis.svg.append("line")
@@ -77,78 +109,84 @@ class SpiderVis {
             vis.svg.append("text")
                 .attr("x", label_coordinate.x)
                 .attr("y", label_coordinate.y)
+                .attr("stroke", "black")
+                .attr("font-size", "10")
+
                 .text(ft_name);
         }
 
         // plotting the data
-        // vis.line = d3.line()
-        //     .x(d => d.x)
-        //     .y(d => d.y);
-        // vis.colors = ["darkorange", "gray", "navy"];
-        //
-        // function getPathCoordinates(data_point) {
-        //     let coordinates = [];
-        //     for (var i = 0; i < vis.nationality.length; i++) {
-        //         let ft_name = vis.nationality[i];
-        //         let angle = (Math.PI / 2) + (2 * Math.PI * i / vis.nationality.length);
-        //         coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
-        //     }
-        //     return coordinates;
-        // }
-        //
-        // for (var i = 0; i < vis.nationality.length; i++) {
-        //     let d = vis.nationality[i];
-        //     let color = vis.colors[i];
-        //     let coordinates = getPathCoordinates(d);
-        //
-        //     //draw the path element
-        //     vis.svg.append("path")
-        //         .datum(coordinates)
-        //         .attr("d", vis.line)
-        //         .attr("stroke-width", 3)
-        //         .attr("stroke", color)
-        //         .attr("fill", color)
-        //         .attr("stroke-opacity", 1)
-        //         .attr("opacity", 0.5);
-        // }
-        this.wrangleData();
-    }
-        wrangleData(){
-            let vis = this;
+        vis.line = d3.line()
+            .x(d => d.x)
+            .y(d => d.y);
+        vis.colors = ["pink"];
 
-            vis.filteredData = [];
 
-            vis.nationality.forEach(function(d, i){
-
-                var filtered = (vis.data)[0].filter(function(item){
-                    return item.nationality == d
-                });
-
-                var maleCount = 0;
-                var femaleCount = 0;
-                //
-                vis.data.forEach(function(country){
-                    //console.log(item.Gender);
-
-                    if ((country.Gender).includes("Male")){
-                        maleCount += 1
-                    }
-                    else if ((country.Gender).includes("Female")){
-                        femaleCount += 1
-                    }
-                })
-                //
-                let filteredNations = {
-                    "nation": d,
-                    "male": maleCount,
-                    "female": femaleCount,
-                }
-                //
-                vis.filteredData.push(filteredNations);
-            });
-
-            console.log(vis.filteredData);
+        function getPathCoordinates(data_point) {
+            let coordinates = [];
+            for (var i = 0; i < 8; i++) {
+                let ft_name = vis.nationality[i];
+                let angle = (Math.PI / 2) + (2 * Math.PI * i / 8);
+                coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
+            }
+            return coordinates;
         }
+        for (var i = 0; i < 1 ; i++) {
+            let d = vis.natData[i];
+            let color = vis.colors[i];
+            let coordinates = getPathCoordinates(d);
+            console.log("coord", coordinates);
+
+
+            //     //draw the path element
+                vis.svg.append("path")
+                    .datum(coordinates)
+                    .attr("d", vis.line)
+                    .attr("stroke-width", 3)
+                    .attr("stroke", color)
+                    .attr("fill", color)
+                    .attr("stroke-opacity", 1)
+                    .attr("opacity", 0.5);
+            }
+            // this.wrangleData();
+        }
+
+        // wrangleData(){
+        //     let vis = this;
+        //
+        //     vis.filteredData = [];
+        //
+        //     vis.nationality.forEach(function(d, i){
+        //
+        //         var filtered = (vis.data)[0].filter(function(item){
+        //             return item.nationality == d
+        //         });
+        //
+        //         var maleCount = 0;
+        //         var femaleCount = 0;
+        //         //
+        //         vis.data.forEach(function(country){
+        //             //console.log(item.Gender);
+        //
+        //             if ((country.Gender).includes("Male")){
+        //                 maleCount += 1
+        //             }
+        //             else if ((country.Gender).includes("Female")){
+        //                 femaleCount += 1
+        //             }
+        //         })
+        //         //
+        //         let filteredNations = {
+        //             "nation": d,
+        //             "male": maleCount,
+        //             "female": femaleCount,
+        //         }
+        //         //
+        //         vis.filteredData.push(filteredNations);
+        //     });
+        //
+        //     console.log(vis.filteredData);
+        // }
 
 
 
@@ -176,5 +214,4 @@ class SpiderVis {
     //
     // updateVis(){
     //
-    // }
 }
