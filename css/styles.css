@@ -45,7 +45,7 @@ body {
     border: 1px solid;
 }
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD*/
 /* The switch - the box around the slider */
 .switch {
     position: relative;
@@ -108,7 +108,7 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
-=======
+/*=======*/
 /* Vertical Navigation Bar */
 
 #cd-vertical-nav a {
