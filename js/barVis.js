@@ -84,7 +84,7 @@ class BarVis {
                 return item.Department == d
             });
 
-            // console.log(filtered);
+            // console.log("bar filter", filtered);
 
             var malecount = 0;
             var femalecount = 0;
