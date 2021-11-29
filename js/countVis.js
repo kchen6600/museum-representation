@@ -33,10 +33,51 @@ class CountVis {
     initVis() {
         let vis = this;
 
+        vis.filteredData = [];
+
+        var acquisitionDates = Array.from(d3.rollup(vis.data[0], v=>v.length, d=>d.DateAcquired, d=>d.Gender));
+
+        acquisitionDates.sort(function(a, b){
+            return new Date(a[0]) - new Date(b[0]);
+        });
+
+        acquisitionDates.forEach(function(d, i){
+            var malecount = 0;
+            var femalecount = 0;
+            var nonbinarycount = 0;
+
+            for (let key of d[1].keys()){
+                if (key.includes("Male")){
+                    malecount +=1
+                }
+                else if (key.includes("Female")){
+                    femalecount +=1
+                }
+                else if (key.includes("Non-binary")){
+                    nonbinarycount +=1
+                }
+            }
+
+            let day = {
+                time: new Date(d[0]),
+                male: malecount,
+                female: femalecount,
+                nonbinary: nonbinarycount,
+            }
+
+            vis.filteredData.push(day);
+
+        })
+
+        console.log(vis.filteredData);
+
+        this.displayData = vis.filteredData;
+
+
         vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
-            vis.height = 300 - vis.margin.top - vis.margin.bottom;
+            vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -49,6 +90,12 @@ class CountVis {
         // SVG clipping path
         // ***TO-DO***
 
+        vis.svg.append("defs")
+            .append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", vis.width)
+            .attr("height", vis.height);
 
         // Scales and axes
         vis.x = d3.scaleTime()
@@ -62,8 +109,24 @@ class CountVis {
             .ticks(10);
 
         vis.yAxis = d3.axisLeft()
-            .scale(vis.y)
-            .ticks(6);
+            .scale(vis.y);
+
+        // Set domains
+        var maleselection = d3.map(vis.filteredData, function(d){
+            return d.male;
+        });
+        var femaleselection = d3.map(vis.filteredData, function(d){
+            return d.female;
+        });
+
+        var selection = maleselection.concat(femaleselection);
+
+        console.log(d3.max(selection));
+
+        vis.y.domain([d3.min(selection), d3.max(selection)]);
+
+        let minMaxX = d3.extent(vis.filteredData.map(function (d) { return (d.time); }));
+        vis.x.domain(minMaxX);
 
 
         vis.svg.append("g")
@@ -96,6 +159,7 @@ class CountVis {
         vis.brush = d3.brushX()
             .extent([[0,0],[vis.width, vis.height]])
             .on("brush", function(event){
+
                 // User just selected a specific region
                 vis.currentBrushRegion = event.selection;
                 vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
@@ -108,7 +172,8 @@ class CountVis {
         // Append brush component here
         // *** TO-DO ***
         vis.brushGroup = vis.svg.append("g")
-            .attr("class", "brush");
+            .attr("class", "brush")
+            .call(vis.brush);
 
         // Add zoom component
         // *** TO-DO ***
@@ -117,31 +182,24 @@ class CountVis {
         //
         vis.zoomFunction = function(event) {
             console.log("zoom");
-            console.log(vis.xOrig);
             vis.xScaleModified = event.transform.rescaleX(vis.xOrig);
+            vis.x = vis.xScaleModified;
             if(vis.currentBrushRegion) {
                 vis.brushGroup.call(vis.brush.move, vis.currentBrushRegion.map(vis.x));
             }
-            vis.x = vis.xScaleModified;
             vis.updateVis();
         } // function that is being called when user zooms
         //
         vis.zoom = d3.zoom()
-            .on("zoom", function(event){
-                vis.zoomFunction(event);
-            })
-            .scaleExtent([1,20]);
+            .on("zoom", vis.zoomFunction)
+            .scaleExtent([1,30]);
 
-        vis.brushGroup.call(vis.zoom)
-            .on("mousedown.zoom", null)
-            .on("touchstart.zoom", null);
-
-        vis.svg.append("defs")
-            .append("clipPath")
-            .attr("id", "clip")
-            .append("rect")
-            .attr("width", vis.width)
-            .attr("height", vis.height);
+        // vis.svg.append("defs")
+        //     .append("clipPath")
+        //     .attr("id", "clip")
+        //     .append("rect")
+        //     .attr("width", vis.width)
+        //     .attr("height", vis.height);
 
         // disable mousedown and drag in zoom, when you activate zoom (by .call)
         // *** TO-DO ***
@@ -163,45 +221,7 @@ class CountVis {
        //     d3.rollup(vis.data[0], v => v.length, d => d.Gender), ([key, value]) => ({key, value}))
        // )
 
-        vis.filteredData = [];
 
-        var acquisitionDates = Array.from(d3.rollup(vis.data[0], v=>v.length, d=>d.DateAcquired, d=>d.Gender));
-
-        acquisitionDates.sort(function(a, b){
-            return new Date(a[0]) - new Date(b[0]);
-        });
-
-       acquisitionDates.forEach(function(d, i){
-           var malecount = 0;
-           var femalecount = 0;
-           var nonbinarycount = 0;
-
-           for (let key of d[1].keys()){
-               if (key.includes("Male")){
-                   malecount +=1
-               }
-               else if (key.includes("Female")){
-                   femalecount +=1
-               }
-               else if (key.includes("Non-binary")){
-                   nonbinarycount +=1
-               }
-           }
-
-           let day = {
-               time: new Date(d[0]),
-               male: malecount,
-               female: femalecount,
-               nonbinary: nonbinarycount,
-           }
-
-           vis.filteredData.push(day);
-
-       })
-
-        console.log(vis.filteredData);
-
-        this.displayData = vis.filteredData;
 
         // Update the visualization
         vis.updateVis();
@@ -217,33 +237,22 @@ class CountVis {
     updateVis() {
         let vis = this;
 
-        // Set domains
-        var maleselection = d3.map(vis.filteredData, function(d){
-            return d.male;
-        });
-        var femaleselection = d3.map(vis.filteredData, function(d){
-            return d.female;
-        });
+        vis.brushGroup.call(vis.zoom)
+            .on("mousedown.zoom", null)
+            .on("touchstart.zoom", null);
 
-        var selection = maleselection.concat(femaleselection);
 
-        console.log(d3.max(selection));
 
-        vis.y.domain([d3.min(selection), d3.max(selection)]);
-
-        let minMaxX = d3.extent(vis.filteredData.map(function (d) { return (d.time); }));
-        vis.x.domain(minMaxX);
+        vis.xAxis.scale(vis.x);
 
         // Call brush component here
         // *** TO-DO ***
 
-        vis.brushGroup
-            .call(vis.brush)
-            .selectAll("rect")
-            .attr("y", -6)
-            .attr("height", vis.height);
-
-        vis.xAxis.scale(vis.x);
+        // vis.brushGroup
+        //     .call(vis.brush)
+        //     .selectAll("rect")
+        //     .attr("y", -6)
+        //     .attr("height", vis.height);
 
         vis.malePath = d3.area()
             .curve(d3.curveLinear)
@@ -303,6 +312,7 @@ class CountVis {
             .attr("clip-path", "url(#clip)");
 
         // Call axis functions with the new domain
+
         vis.svg.select(".x-axis").call(vis.xAxis);
         vis.svg.select(".y-axis").call(vis.yAxis);
 
@@ -312,8 +322,10 @@ class CountVis {
     onSelectionChange(selectionStart, selectionEnd) {
         let vis = this;
 
-        d3.select("#time-period-min").text(dateFormatter(selectionStart));
-        d3.select("#time-period-max").text(dateFormatter(selectionEnd));
+        console.log(selectionStart);
+        console.log(selectionEnd);
+        // d3.select("#time-period-min").text(dateFormatter(selectionStart));
+        // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
 
     }
 }
