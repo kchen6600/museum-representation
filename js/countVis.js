@@ -74,10 +74,10 @@ class CountVis {
         this.displayData = vis.filteredData;
 
 
-        vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
+        vis.margin = { top: 40, right: 10, bottom: 60, left: 60 };
 
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right,
-            vis.height = 500 - vis.margin.top - vis.margin.bottom;
+            vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -131,16 +131,18 @@ class CountVis {
 
         vis.svg.append("g")
             .attr("class", "x-axis axis")
-            .attr("transform", "translate(0," + vis.height + ")");
+            .attr("transform", "translate(0," + vis.height + ")")
+            .style("font-size", "11px");
 
         vis.svg.append("g")
-            .attr("class", "y-axis axis");
+            .attr("class", "y-axis axis")
+            .style("font-size", "11px");
 
         // Axis title
         vis.svg.append("text")
             .attr("x", -50)
             .attr("y", -8)
-            .text("Acquisitions");
+            .text("Number of Acquisitions by Gender");
 
         // Append a path for the area function, so that it is later behind the brush overlay
         vis.maletimePath = vis.svg.append("path")
@@ -194,16 +196,6 @@ class CountVis {
             .on("zoom", vis.zoomFunction)
             .scaleExtent([1,30]);
 
-        // vis.svg.append("defs")
-        //     .append("clipPath")
-        //     .attr("id", "clip")
-        //     .append("rect")
-        //     .attr("width", vis.width)
-        //     .attr("height", vis.height);
-
-        // disable mousedown and drag in zoom, when you activate zoom (by .call)
-        // *** TO-DO ***
-
         // (Filter, aggregate, modify data)
         vis.wrangleData();
     }
@@ -216,12 +208,6 @@ class CountVis {
 
     wrangleData() {
         let vis = this;
-
-       // vis.filteredData = Array.from(
-       //     d3.rollup(vis.data[0], v => v.length, d => d.Gender), ([key, value]) => ({key, value}))
-       // )
-
-
 
         // Update the visualization
         vis.updateVis();
@@ -241,18 +227,7 @@ class CountVis {
             .on("mousedown.zoom", null)
             .on("touchstart.zoom", null);
 
-
-
         vis.xAxis.scale(vis.x);
-
-        // Call brush component here
-        // *** TO-DO ***
-
-        // vis.brushGroup
-        //     .call(vis.brush)
-        //     .selectAll("rect")
-        //     .attr("y", -6)
-        //     .attr("height", vis.height);
 
         vis.malePath = d3.area()
             .curve(d3.curveLinear)

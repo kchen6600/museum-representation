@@ -47,6 +47,7 @@ function createVis(data){
         let rangeStart = event.detail[0];
         let rangeEnd = event.detail[1];
         countVis.onSelectionChange(rangeStart, rangeEnd);
+        barVis.onSelectionChange(rangeStart, rangeEnd);
     });
 
 

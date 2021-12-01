@@ -2,13 +2,13 @@
 *      class BarVis        *
 * * * * * * * * * * * * * */
 
-
 class BarVis {
 
     constructor(parentElement, _data){
         this.parentElement = parentElement;
         this.data = _data;
         this.displayData = [];
+        this.filteredData = this.data[0];
 
         this.initVis()
     }
@@ -26,7 +26,7 @@ class BarVis {
 
         })
 
-        vis.margin = {top: 20, right: 20, bottom: 20, left: 40};
+        vis.margin = { top: 40, right: 0, bottom: 60, left: 60 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -38,12 +38,11 @@ class BarVis {
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 
         // add title
-        vis.svg.append('g')
-            .attr('class', 'title bar-title')
-            .append('text')
-            .text('Male vs Female Artist Representation by Department')
-            .attr('transform', `translate(${vis.width / 2}, 10)`)
-            .attr('text-anchor', 'middle');
+        vis.svg.append("text")
+            .attr("x", -50)
+            .attr("y", -8)
+            .text("Male vs Female Artist Representation by Department");
+
 
         // tooltip
         vis.tooltip = d3.select("body").append('div')
@@ -64,7 +63,8 @@ class BarVis {
             .ticks(10);
 
         vis.svg.append("g")
-            .attr("class", "axis y-axis");
+            .attr("class", "axis y-axis")
+            .style("font-size", "11px");
 
         vis.svg.append("g")
             .attr("class", "axis x-axis")
@@ -76,11 +76,12 @@ class BarVis {
     wrangleData(){
         let vis = this;
 
-        vis.filteredData = [];
+        vis.deptData = [];
+
 
         vis.departments.forEach(function(d, i){
 
-            var filtered = (vis.data)[0].filter(function(item){
+            var filtered = (vis.filteredData).filter(function(item){
                 return item.Department == d
             });
 
@@ -106,7 +107,7 @@ class BarVis {
                 "female": femalecount,
             }
             //
-            vis.filteredData.push(dept);
+            vis.deptData.push(dept);
         });
 
         //console.log(vis.filteredData);
@@ -118,11 +119,11 @@ class BarVis {
     updateVis(){
         let vis = this;
 
-        vis.x.domain(vis.filteredData.map(d => d.name));
-        var maleselection = d3.map(vis.filteredData, function(d){
+        vis.x.domain(vis.deptData.map(d => d.name));
+        var maleselection = d3.map(vis.deptData, function(d){
             return d.male;
         });
-        var femaleselection = d3.map(vis.filteredData, function(d){
+        var femaleselection = d3.map(vis.deptData, function(d){
             return d.female;
         });
 
@@ -137,7 +138,7 @@ class BarVis {
             .call(vis.xAxis);
 
         vis.barsMale = vis.svg.selectAll(".male-bars")
-            .data(vis.filteredData);
+            .data(vis.deptData);
 
         vis.barsMale.exit()
             .transition()
@@ -186,7 +187,7 @@ class BarVis {
         ;
 
         vis.barsFemale = vis.svg.selectAll(".female-bars")
-            .data(vis.filteredData);
+            .data(vis.deptData);
 
         vis.barsFemale.exit()
             .transition()
@@ -238,7 +239,24 @@ class BarVis {
         console.log('here')
 
     }
+    onSelectionChange(selectionStart, selectionEnd) {
+        let vis = this;
 
+
+        // Filter original unfiltered data depending on selected time period (brush)
+
+        // *** TO-DO ***
+        //vis.filteredData = ...
+
+        vis.filteredData = vis.data[0].filter(function (d) {
+            return (dateParser(d.DateAcquired)) >= selectionStart && (dateParser(d.dateAcquired)) <= selectionEnd;
+        });
+
+        console.log(vis.filteredData);
+
+
+        vis.wrangleData();
+    }
 
 
 }

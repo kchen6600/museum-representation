@@ -30,6 +30,10 @@ body {
     height:500px;
 }
 
+#countvis{
+    height:500px;
+}
+
 #sankeyvis{
     height: 750px;
     margin-top: 50px;
