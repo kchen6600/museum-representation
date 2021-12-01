@@ -34,7 +34,6 @@ function createVis(data){
         }
     }
 
-
     // Instantiate visualization object
     barVis = new BarVis("barvis", data);
     countVis = new CountVis("countvis", data, eventHandler);

@@ -9,6 +9,7 @@ class BarVis {
         this.data = _data;
         this.displayData = [];
         this.filteredData = this.data[0];
+        this.colors = ["steelblue", "red"];
 
         this.initVis()
     }
@@ -42,6 +43,35 @@ class BarVis {
             .attr("x", -50)
             .attr("y", -8)
             .text("Male vs Female Artist Representation by Department");
+
+        vis.legend = vis.svg.append("g")
+            .attr('class', 'legend')
+            .attr('transform', `translate(${vis.width - 330}, ${vis.height + 20})`)
+
+        vis.legend.selectAll("rect")
+            .data(vis.colors)
+            .enter()
+            .append("rect")
+            .attr("fill", function(d){
+                return d
+            })
+            .attr("height", 20)
+            .attr("width", 20)
+            .attr("x", 200)
+            .attr('y', function (d, i){
+                return ((i * 30) - vis.height);
+            });
+
+        vis.svg.append("text")
+            .attr("x", vis.width - vis.margin.left - 40 )
+            .attr("y", 35)
+            .text("male");
+
+        vis.svg.append("text")
+            .attr("x", vis.width - vis.margin.left - 40)
+            .attr("y", 65)
+            .text("female")
+
 
 
         // tooltip
@@ -149,7 +179,7 @@ class BarVis {
             .enter()
             .append("rect")
             .attr("class", "male-bars")
-            .attr('fill', "blue")
+            .attr('fill', "steelblue")
             .merge(vis.barsMale)
             .attr("width", vis.x.bandwidth() / 2)
             .attr("height", function(d, i){
@@ -177,7 +207,7 @@ class BarVis {
             .on('mouseout', function(event, d){
                 d3.select(this)
                     .attr('stroke-width', '0px')
-                    .attr("fill", "blue")
+                    .attr("fill", "steelblue")
                 vis.tooltip
                     .style("opacity", 0)
                     .style("left", 0)

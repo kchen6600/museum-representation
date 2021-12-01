@@ -86,9 +86,7 @@ class CountVis {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-
         // SVG clipping path
-        // ***TO-DO***
 
         vis.svg.append("defs")
             .append("clipPath")
