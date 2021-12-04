@@ -43,6 +43,7 @@ function createVis(data){
     artVis = new ArtVis("artvis", data);
 
     eventHandler.bind("selectionChanged", function(event){
+        console.log("SELECTION CHANGED");
         console.log(event);
         console.log(event.detail);
         let rangeStart = event.detail[0];

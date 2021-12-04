@@ -160,6 +160,7 @@ class CountVis {
             .extent([[0,0],[vis.width, vis.height]])
             .on("brush", function(event){
 
+                console.log("BRUSHING");
                 // User just selected a specific region
                 vis.currentBrushRegion = event.selection;
                 vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
@@ -297,9 +298,8 @@ class CountVis {
 
         console.log(selectionStart);
         console.log(selectionEnd);
-        // d3.select("#time-period-min").text(dateFormatter(selectionStart));
-        // d3.select("#time-period-max").text(dateFormatter(selectionEnd));
-
+        d3.select("#time-period-min").text(dateFormatter(selectionStart));
+        d3.select("#time-period-max").text(dateFormatter(selectionEnd));
     }
 }
 
