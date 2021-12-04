@@ -35,7 +35,7 @@ class ArtVis {
         let vis = this;
 
         // * TO-DO *
-        vis.margin = {top: 40, right: 40, bottom: 60, left: 40};
+        vis.margin = {top: 40, right: 40, bottom: 60, left: 45};
 
         // vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         // vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
@@ -114,17 +114,19 @@ class ArtVis {
 
         vis.title = vis.svg.append("text")
             .attr("class", "barchart-title")
-            .text("Art Vis")
+            .text("Top Female Artists Represented in the MoMA Collection")
             .attr('transform', `translate(${vis.width / 2}, -5)`)
-            .attr('text-anchor', 'middle');;
+            .attr('text-anchor', 'middle');
 
         vis.svg.append("g")
             .attr("class", "x-axis axis")
-            .attr("transform", "translate(0,"+ vis.height+")");
+            .attr("transform", "translate(0,"+ vis.height+")")
+            .style("font-size", "11px");
 
         vis.svg.append("g")
             .attr("class", "y-axis axis")
-            .attr("x", 200);
+            .attr("x", 200)
+            .style("font-size", "8px");
 
         vis.svg.select(".y-axis").call(vis.yAxis);
         vis.svg.select(".x-axis").call(vis.xAxis);
