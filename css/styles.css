@@ -49,6 +49,35 @@ body {
     border: 1px solid;
 }
 
+#artvis{
+    height: 500px;
+}
+
+.bars {
+    fill: #DEA7B8;
+}
+
+.tooltip-artvis {
+    position: absolute;
+    text-align: center;
+    width: 260px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border-radius: 8px;
+    /*  pointer-events: none;	This line needs to be removed */
+}
+
+.tooltip-artvis img{
+    width:230px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+
+}
+
 /*<<<<<<< HEAD*/
 /* The switch - the box around the slider */
 .switch {

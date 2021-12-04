@@ -2,6 +2,7 @@ let barVis;
 let countVis;
 let sankeyVis;
 let spiderVis;
+let artVis;
 
 let promises = [
     d3.json("data/Artworks.json")
@@ -39,6 +40,7 @@ function createVis(data){
     countVis = new CountVis("countvis", data, eventHandler);
     sankeyVis = new SankeyVis("sankeyvis", data);
     spiderVis = new SpiderVis("spidervis", data);
+    artVis = new ArtVis("artvis", data);
 
     eventHandler.bind("selectionChanged", function(event){
         console.log(event);
