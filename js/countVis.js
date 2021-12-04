@@ -69,7 +69,7 @@ class CountVis {
 
         })
 
-        console.log(vis.filteredData);
+        // console.log(vis.filteredData);
 
         this.displayData = vis.filteredData;
 
@@ -119,7 +119,7 @@ class CountVis {
 
         var selection = maleselection.concat(femaleselection);
 
-        console.log(d3.max(selection));
+        // console.log(d3.max(selection));
 
         vis.y.domain([d3.min(selection), d3.max(selection)]);
 
@@ -160,7 +160,7 @@ class CountVis {
             .extent([[0,0],[vis.width, vis.height]])
             .on("brush", function(event){
 
-                console.log("BRUSHING");
+                // console.log("BRUSHING");
                 // User just selected a specific region
                 vis.currentBrushRegion = event.selection;
                 vis.currentBrushRegion = vis.currentBrushRegion.map(vis.x.invert);
@@ -182,7 +182,7 @@ class CountVis {
         vis.xOrig = vis.x; // save original scale
         //
         vis.zoomFunction = function(event) {
-            console.log("zoom");
+            // console.log("zoom");
             vis.xScaleModified = event.transform.rescaleX(vis.xOrig);
             vis.x = vis.xScaleModified;
             if(vis.currentBrushRegion) {
@@ -296,8 +296,8 @@ class CountVis {
     onSelectionChange(selectionStart, selectionEnd) {
         let vis = this;
 
-        console.log(selectionStart);
-        console.log(selectionEnd);
+        // console.log(selectionStart);
+        // console.log(selectionEnd);
         d3.select("#time-period-min").text(dateFormatter(selectionStart));
         d3.select("#time-period-max").text(dateFormatter(selectionEnd));
     }

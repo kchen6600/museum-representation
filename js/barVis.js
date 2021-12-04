@@ -266,7 +266,7 @@ class BarVis {
         ;
 
 
-        console.log('here')
+        // console.log('here')
 
     }
     onSelectionChange(selectionStart, selectionEnd) {
@@ -282,7 +282,7 @@ class BarVis {
             return (dateParser(d.DateAcquired)) >= selectionStart && (dateParser(d.dateAcquired)) <= selectionEnd;
         });
 
-        console.log(vis.filteredData);
+        // console.log(vis.filteredData);
 
 
         vis.wrangleData();
