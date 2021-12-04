@@ -105,13 +105,13 @@ input:checked + .slider:before {
 }
 
 /* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
+/*.slider.round {*/
+/*    border-radius: 34px;*/
+/*}*/
 
-.slider.round:before {
-    border-radius: 50%;
-}
+/*.slider.round:before {*/
+/*    border-radius: 50%;*/
+/*}*/
 /*=======*/
 /* Vertical Navigation Bar */
 
