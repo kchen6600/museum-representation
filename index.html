@@ -13,7 +13,8 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <link rel="stylesheet" href="css/styles.css">
-
+    <link rel="stylesheet" type="text/css" href="css/fullpage.css" />
+    <script type="text/javascript" src="js/libraries/fullpage.js"></script>
 </head>
 <body>
 
@@ -46,38 +47,109 @@
         </li>
     </ul>
 </div>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-10 offset-1">
+<div id="fullpage">
+<!--<div class="container-fluid">-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-10 offset-1">-->
 
             <!-- header -->
-            <div class="row justify-content-center">
 
+            <div class="section">
                 <!-- Headline -->
-                <h1 id="header" class="align-self-center">
-                    Representation at the Museum of Modern Art
-                </h1>
+                <div class="container-fluid h-100">
+                <div id="header" class="align-self-center">
+                    <h1>Diverse artist representation has long been an issue in art museums, but has this changed in our contemporary times?</h1>
+                    <h5>Take a look at artist representation data from one of the most well-recognized collections of modern art: The Museum of Modern Art (MoMA).</h5>
+                </div>
+                    </div>
             </div>
 
-            <!-- content | map -->
+    <div class="section" id="section0">
+        <div class="container-fluid h-100">
             <div class="row">
-                <div class="col-md-4"><div id="countvis"></div></div>
-                <div class="col-md-8"><div id="barvis"></div></div>
-<!--                <div id="clustervis">cluster viz placeholder</div>-->
-                </div>
-            <div class="row">
-                <div id="sankeyvis"></div>
-                <div id="spidervis">
-                    <label class="switch" id="american-toggle">
-                        <input type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
+                <h4>MoMA began acquiring artworks in 1929 at its establishment. <br>
+                    We are nearing a century of acquisition data, but what does it show about gender representation in the arts? <br><br>
+                    As a museum that prides itself on making strides in gender equity, do you think there has been a significant increase in the number of female pieces acquired over the last hundred years?<br><br>
+                    Scroll to find out below.
+                </h4>
             </div>
         </div>
     </div>
-</div>
+    <div class="section" id="section1">
+        <div class="container-fluid h-100">
+            <div class="row">
+                <div class="col-md-4"><div id="countvis"></div></div>
+                <div class="col-md-8"><div id="barvis"></div></div>
+            </div>
+            <div class="row">
+                <h5>Brush over the acquisition chart to see how representation changed by department as new works were acquired.</h5>
+                <span>Period selected:</span>
+
+                <div id="time-boxes">
+                    <div class="child" id="time-period-min" style="width:100px;height:30px; background:#f2f2f2;border:0px solid #000;" align="middle">1929</div>
+                    <p class="child" align="middle"> – </p>
+                    <div class="child" id="time-period-max" style="width:100px;height:30px; background:#f2f2f2;border:0px solid #000;" align="middle">2021</div>
+                </div>
+                </div>
+        </div>
+    </div>
+    <div class="section" id="section2">
+        <div class="container-fluid h-100">
+            <div class="row">
+                <h4>Let's understand the diversity issue further. While there are large disparities in regards to artist gender representation in the data, we can see disparities in nationality/geographic representation in the MoMA collection as well.</h4>
+                <h5><br>Hover over the different links to focus in on the gender, nationality, and art type classification relationships below.</h5>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section3">
+        <div class="container-fluid h-100">
+        <div id="sankeyvis"></div>
+            </div>
+    </div>
+    <div class="section" id="section4">
+        <div class="container-fluid h-100">
+            <div class="row">
+                <h4>Let's understand the diversity issue further. While there are large disparities in regards to artist gender representation in the data, we can see disparities in nationality/geographic representation in the MoMA collection as well.</h4>
+                <h5><br>Hover over the different links to focus in on the gender, nationality, and art type classification relationships below.</h5>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section5">
+        <div id="spidervis">
+            <label class="switch" id="american-toggle">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+<!--            <div class="row justify-content-center">-->
+
+<!--                &lt;!&ndash; Headline &ndash;&gt;-->
+<!--                <h1 id="header" class="align-self-center">-->
+<!--                    Diverse artist representation has long been an issue in art museums, but has this changed in our contemporary times?-->
+<!--                </h1>-->
+<!--            </div>-->
+
+            <!-- content | map -->
+<!--            <div class="row">-->
+<!--                <div class="col-md-4"><div id="countvis"></div></div>-->
+<!--                <div class="col-md-8"><div id="barvis"></div></div>-->
+<!--&lt;!&ndash;                <div id="clustervis">cluster viz placeholder</div>&ndash;&gt;-->
+<!--                </div>-->
+<!--            <div class="row">-->
+<!--                <div id="sankeyvis"></div>-->
+<!--                <div id="spidervis">-->
+<!--                    <label class="switch" id="american-toggle">-->
+<!--                        <input type="checkbox">-->
+<!--                        <span class="slider round"></span>-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</div>-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
@@ -87,7 +159,6 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/d3-sankey@0"></script>
 <!--<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>-->
-
 
 <!-- Visualization objects -->
 <script src="js/barVis.js"></script>

@@ -1,7 +1,26 @@
-body {
-    padding-top: 40px;
+/* prevent stack-loading on the first title page help from: https://stackoverflow.com/a/53807786/10012842 */
+html,
+body,
+#fullpage,
+.section,
+.slide,
+.fp-tableCell
+{
+    height: 100%
 }
 
+
+body {
+    padding-top: 40px;
+    font-family: "Avenir";
+}
+
+.section{
+    text-align:center;
+    padding-left:4%;
+    padding-right:4%;
+    padding-bottom: 3%;
+}
 .tooltip {
     position: absolute;
     text-align: center;
@@ -24,6 +43,67 @@ body {
 
 .axis{
     font-size: 6px;
+}
+
+#time-boxes {
+    width: 100%;
+    height: 90px;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.child {
+    display: inline-block;
+    width: 5%;
+    height: 50%;
+}
+
+
+#header{
+    height: 100%;
+    background-image: url("https://64.media.tumblr.com/36d8d3e575d8b4f23549d1a4c7383278/73e1f7484c97dd06-cf/s400x600/3dc68c7134d23c9361842f43bb8c8277e2e63b9b.gifv");
+    font-size: 40px;
+    padding: 200px;
+    text-align: center;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    color: black;
+}
+#section0{
+    height: 100%;
+    padding: 200px;
+    background-color: black;
+    /*background-image: url("https://c.tenor.com/ZwPZlw0itmMAAAAC/waves-black.gif");*/
+    /*background-position: center; !* Center the image *!*/
+    /*background-repeat: no-repeat; !* Do not repeat the image *!*/
+    /*background-size: cover;*/
+    color: #D3D3D3;
+}
+#section1{
+    height:100%;
+    padding-top: 2%;
+}
+
+#section2{
+    height: 100%;
+    padding: 200px;
+    background-color: black;
+    background-image: url("https://i.pinimg.com/originals/62/05/f5/6205f5b7e065b35b921b9a58561107b6.gif");
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    color: #D3D3D3;
+}
+#section3{
+    height:120%;
+    padding-bottom: 20%;
+}
+#section4{
+    height: 100%;
+    padding: 200px;
+    background-color: black;
+    color: #D3D3D3;
 }
 
 #barvis{
