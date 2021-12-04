@@ -13,7 +13,6 @@ class SpiderVis {
         this.initVis()
     }
 
-
     initVis() {
         let vis = this;
 
@@ -21,9 +20,15 @@ class SpiderVis {
         vis.filtered = (vis.data)[0].filter(function (d) {
             return d.Gender == "Female";
         })
-        // console.log("filtered data:", vis.filtered);
+
+        vis.male = (vis.data)[0].filter(function (d) {
+            return d.Gender == "Male";
+        })
+
+        console.log("men", vis.male);
 
         vis.filtered.sort()
+        vis.male.sort()
 
         // separate out all nationalities
         vis.nationality = [];
@@ -34,23 +39,36 @@ class SpiderVis {
                 vis.nationality.push(country);
             }
         })
+        vis.male.forEach(function (d, i) {
+            if (vis.nationality.includes(d.Nationality) != true) {
+                var country = d.Nationality;
+                vis.nationality.push(country);
+            }
+        })
         vis.nationality.forEach(function (d, i) {
             if (vis.nationality[i] === undefined) {
                 vis.nationality[i] = "Unknown";
             }
         })
+        console.log("UPDATED NAT", vis.nationality);
 
         vis.natData = []
         var countryInfo ={}
 
         vis.nationality.forEach(function(f,i){
-            var pplCount = 0;
+            var femaleCount = 0;
+            var maleCount = 0;
             vis.filtered.forEach(function(d){
                 if(d.Nationality == f){
-                    pplCount += 1;
+                    femaleCount += 1;
                 }
             })
-            countryInfo[f] = pplCount;
+            vis.male.forEach(function(d){
+                if(d.Nationality == f){
+                    maleCount += 1;
+                }
+            })
+            countryInfo[f] = femaleCount, maleCount;
         })
 
         vis.sorted = [];
