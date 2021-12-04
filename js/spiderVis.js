@@ -8,7 +8,7 @@ class SpiderVis {
         this.parentElement = parentElement;
         this.data = _data;
         this.displayData = [];
-        this.change = false;
+        this.change = 1;
 
         this.initVis()
     }
@@ -103,41 +103,81 @@ class SpiderVis {
             let vis = this;
             // INCLUDING AMERICANS
             d3.select("#american-toggle").on("click", function (){
-                vis.natData = [];
-                vis.countries = [];
-                vis.sortable = vis.sorted.slice(0,8);
-                vis.sortable.forEach(function (d,i){
-                    vis.countries.push(d[0]);
-                })
-                console.log("NEW sortable", vis.sortable);
-                console.log("NEW countries", vis.countries);
+                vis.change += 1;
+                console.log("button clicked");
+                if(vis.change%2 === 0){
+                    vis.natData = [];
+                    vis.countries = [];
+                    vis.sortable = vis.sorted.slice(0,8);
+                    vis.sortable.forEach(function (d,i){
+                        vis.countries.push(d[0]);
+                    })
+                    console.log("NEW sortable", vis.sortable);
+                    console.log("NEW countries", vis.countries);
 
-                vis.objSorted = {};
-                vis.sortable.forEach(function(item){
-                    vis.objSorted[item[0]]=item[1]
-                });
+                    vis.objSorted = {};
+                    vis.sortable.forEach(function(item){
+                        vis.objSorted[item[0]]=item[1]
+                    });
 
-                vis.natData.push(vis.objSorted);
+                    vis.natData.push(vis.objSorted);
 
-                console.log("Nationality array", vis.natData);
+                    console.log("Nationality array", vis.natData);
 
-                vis.svgNew = d3.select("#spidervis").append("svg")
-                    .attr("width", 800)
-                    .attr("height", 800)
-                    .attr("stroke", "gray");
+                    vis.svgNew = d3.select("#spidervis").append("svg")
+                        .attr("width", 800)
+                        .attr("height", 800)
+                        .attr("stroke", "gray");
 
-                vis.radialScale
-                    .domain([0, 15000])
-                    .range([0, 250]);
+                    vis.radialScale
+                        .domain([0, 15000])
+                        .range([0, 250]);
 
-                // append the ticks for the count TO BE CHANGED
-                vis.ticks = [3000, 6000, 9000, 12000, 15000];
-                
-                vis.change = true;
+                    // append the ticks for the count TO BE CHANGED
+                    vis.ticks = [3000, 6000, 9000, 12000, 15000];
+                }
+                else{
+                    vis.svgNew.remove();
+                    vis.natData = [];
+                    vis.countries = [];
+                    vis.sortable = vis.sorted.slice(1,9);
+                    vis.sortable.forEach(function (d,i){
+                        vis.countries.push(d[0]);
+                    })
+                    console.log("sortable", vis.sortable);
+                    console.log("countries", vis.countries);
 
+
+
+                    vis.objSorted = {};
+                    vis.sortable.forEach(function(item){
+                        vis.objSorted[item[0]]=item[1]
+                    });
+
+                    vis.natData.push(vis.objSorted);
+
+                    console.log("Nationality array", vis.natData);
+
+                    // create the base of the spider vis
+                    vis.svg = d3.select("#spidervis").append("svg")
+                        .attr("width", 800)
+                        .attr("height", 800)
+                        .attr("stroke", "gray");
+
+                    vis.radialScale = d3.scaleLinear()
+                        .domain([0, 1500])
+                        .range([0, 250]);
+
+                    // append the ticks for the count TO BE CHANGED
+                    vis.ticks = [300, 600, 900, 1200, 1500];
+                }
                 vis.updateVis();
 
-            })
+            });
+
+
+
+
             vis.updateVis();
 
         }
@@ -145,7 +185,7 @@ class SpiderVis {
         updateVis() {
             let vis = this;
 
-            if(this.change === false) {
+            if(this.change%2 !== 0) {
                 vis.ticks.forEach(t =>
                     vis.svg
                         .append("circle")
@@ -153,6 +193,7 @@ class SpiderVis {
                         .attr("cy", 300)
                         .attr("fill", "none")
                         .attr("stroke", "gray")
+                        .attr("opacity", 0.3)
                         .attr("r", vis.radialScale(t))
                 );
 
@@ -188,6 +229,7 @@ class SpiderVis {
                         .attr("y1", 300)
                         .attr("x2", line_coordinate.x)
                         .attr("y2", line_coordinate.y)
+                        .attr("opacity", 0.3)
                         .attr("stroke", "gray");
 
                     //draw axis label
@@ -195,7 +237,7 @@ class SpiderVis {
                         .append("text")
                         .attr("x", label_coordinate.x)
                         .attr("y", label_coordinate.y)
-                        .attr("stroke", "black")
+                        .attr("stroke", "gray")
                         .attr("font-size", "10")
                         .text(ft_name);
                 }
@@ -242,10 +284,12 @@ class SpiderVis {
                 vis.ticks.forEach(t =>
                     vis.svgNew
                         .append("circle")
+                        .style("stroke-linecap", "round")
                         .attr("cx", 300)
                         .attr("cy", 300)
                         .attr("fill", "none")
                         .attr("stroke", "gray")
+                        .attr("opacity", 0.3)
                         .attr("r", vis.radialScale(t))
                 );
 
@@ -275,10 +319,12 @@ class SpiderVis {
                     //draw axis line
                     vis.svgNew
                         .append("line")
+                        .style("stroke-linecap", "round")
                         .attr("x1", 300)
                         .attr("y1", 300)
                         .attr("x2", line_coordinate.x)
                         .attr("y2", line_coordinate.y)
+                        .attr("opacity", 0.3)
                         .attr("stroke", "gray");
 
                     //draw axis label
@@ -286,7 +332,7 @@ class SpiderVis {
                         .append("text")
                         .attr("x", label_coordinate.x)
                         .attr("y", label_coordinate.y)
-                        .attr("stroke", "black")
+                        .attr("stroke", "gray")
                         .attr("font-size", "10")
                         .text(ft_name);
                 }
