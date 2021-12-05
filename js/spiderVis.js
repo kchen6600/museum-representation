@@ -136,7 +136,7 @@ class SpiderVis {
             vis.objSortedMale[item[0]]=item[1]
         });
 
-        vis.natData.push(vis.objSortedFemale, vis.objSortedMale);
+        vis.natData.push(vis.objSortedMale, vis.objSortedFemale);
 
         console.log("Nationality array", vis.natData);
 
@@ -154,7 +154,6 @@ class SpiderVis {
         // append the ticks for the count TO BE CHANGED
         vis.ticks = [1000, 5000, 10000, 15000, 23000];
 
-
         this.wrangleData();
     }
 
@@ -167,19 +166,34 @@ class SpiderVis {
                 if(vis.change%2 === 0){
                     vis.natData = [];
                     vis.countries = [];
-                    vis.sortable = vis.sorted.slice(0,8);
-                    vis.sortable.forEach(function (d,i){
+                    vis.femaleSortable = vis.femaleSorted.slice(0,8);
+                    vis.femaleSortable.forEach(function (d,i){
                         vis.countries.push(d[0]);
                     })
-                    console.log("NEW sortable", vis.sortable);
-                    console.log("NEW countries", vis.countries);
+                    console.log("countries", vis.countries);
 
-                    vis.objSorted = {};
-                    vis.sortable.forEach(function(item){
-                        vis.objSorted[item[0]]=item[1]
+                    //select top 8 male countries based on female data
+                    vis.maleCountries = [];
+                    vis.maleSorted.forEach(function(d, i){
+                        vis.countries.forEach(function(d, j){
+                            if(vis.countries[j] === vis.maleSorted[i][0]){
+                                vis.maleCountries.push(vis.maleSorted[i]);
+                            }
+                        })
                     });
 
-                    vis.natData.push(vis.objSorted);
+                    // convert back into object
+                    vis.objSortedFemale = {};
+                    vis.objSortedMale = {};
+
+                    vis.femaleSortable.forEach(function(item){
+                        vis.objSortedFemale[item[0]]=item[1]
+                    });
+                    vis.maleCountries.forEach(function(item){
+                        vis.objSortedMale[item[0]]=item[1]
+                    });
+
+                    vis.natData.push(vis.objSortedMale, vis.objSortedFemale);
 
                     console.log("Nationality array", vis.natData);
 
@@ -189,29 +203,44 @@ class SpiderVis {
                         .attr("stroke", "gray");
 
                     vis.radialScale
-                        .domain([0, 15000])
+                        .domain([0, 48000])
                         .range([0, 250]);
 
                     // append the ticks for the count TO BE CHANGED
-                    vis.ticks = [3000, 6000, 9000, 12000, 15000];
+                    vis.ticks = [3000, 6000, 12000, 24000, 48000];
                 }
                 else{
                     vis.svgNew.remove();
                     vis.natData = [];
                     vis.countries = [];
-                    vis.sortable = vis.sorted.slice(1,9);
-                    vis.sortable.forEach(function (d,i){
+                    vis.femaleSortable = vis.femaleSorted.slice(1,9);
+                    vis.femaleSortable.forEach(function (d,i){
                         vis.countries.push(d[0]);
                     })
-                    console.log("sortable", vis.sortable);
                     console.log("countries", vis.countries);
 
-                    vis.objSorted = {};
-                    vis.sortable.forEach(function(item){
-                        vis.objSorted[item[0]]=item[1]
+                    //select top 8 male countries based on female data
+                    vis.maleCountries = [];
+                    vis.maleSorted.forEach(function(d, i){
+                        vis.countries.forEach(function(d, j){
+                            if(vis.countries[j] === vis.maleSorted[i][0]){
+                                vis.maleCountries.push(vis.maleSorted[i]);
+                            }
+                        })
                     });
 
-                    vis.natData.push(vis.objSorted);
+                    // convert back into object
+                    vis.objSortedFemale = {};
+                    vis.objSortedMale = {};
+
+                    vis.femaleSortable.forEach(function(item){
+                        vis.objSortedFemale[item[0]]=item[1]
+                    });
+                    vis.maleCountries.forEach(function(item){
+                        vis.objSortedMale[item[0]]=item[1]
+                    });
+
+                    vis.natData.push(vis.objSortedMale, vis.objSortedFemale);
 
                     console.log("Nationality array", vis.natData);
 
@@ -222,11 +251,11 @@ class SpiderVis {
                         .attr("stroke", "gray");
 
                     vis.radialScale = d3.scaleLinear()
-                        .domain([0, 1500])
+                        .domain([0, 23000])
                         .range([0, 250]);
 
                     // append the ticks for the count TO BE CHANGED
-                    vis.ticks = [300, 600, 900, 1200, 1500];
+                    vis.ticks = [1000, 5000, 10000, 15000, 23000];
                 }
                 vis.updateVis();
 
@@ -397,7 +426,7 @@ class SpiderVis {
                 vis.line = d3.line()
                     .x(d => d.x)
                     .y(d => d.y);
-                vis.colors = ["pink"];
+                vis.colors = ["pink", "orange"];
 
                 function getPathCoordinates(data_point) {
                     let coordinates = [];
@@ -409,7 +438,7 @@ class SpiderVis {
                     }
                     return coordinates;
                 }
-                for (var i = 0; i < 1 ; i++) {
+                for (var i = 0; i < 2 ; i++) {
                     let d = vis.natData[i];
                     let color = vis.colors[i];
                     let coordinates = getPathCoordinates(d);

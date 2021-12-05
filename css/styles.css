@@ -267,15 +267,6 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* Rounded sliders */
-/*.slider.round {*/
-/*    border-radius: 34px;*/
-/*}*/
-
-/*.slider.round:before {*/
-/*    border-radius: 50%;*/
-/*}*/
-/*=======*/
 /* Vertical Navigation Bar */
 
 #cd-vertical-nav a {
@@ -406,4 +397,24 @@ ul {
     width: 38px;
     height: 44px;
     /*background: url("../img/cd-arrow-bottom.svg") no-repeat center center;*/
+}
+
+#american-toggle {
+    /*position: absolute;*/
+    /*top: 140px;*/
+    /*left: 50px;*/
+    background: #f08080;
+    border-radius: 3px;
+    border: none;
+    color: white;
+    margin: 0;
+    padding: 5px;
+    width: 60px;
+    cursor: pointer;
+    height: 30px;
+    text-anchor: middle;
+}
+
+#american-toggle:hover {
+    background-color: #696969;
 }
