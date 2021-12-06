@@ -375,6 +375,7 @@ class SpiderVis {
                 vis.ticks.forEach(t =>
                     vis.svg
                         .append("text")
+                        .attr("font-size", 10)
                         .attr("x", 405)
                         .attr("y", 400 - vis.radialScale(t))
                         .text(t.toString())
@@ -470,6 +471,7 @@ class SpiderVis {
                 vis.ticks.forEach(t =>
                     vis.svgNew
                         .append("text")
+                        .attr("font-size", 10)
                         .attr("x", 405)
                         .attr("y",  400-vis.radialScale(t))
                         .text(t.toString())
