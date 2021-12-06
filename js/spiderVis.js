@@ -82,8 +82,8 @@ class SpiderVis {
             })
             maleInfo[f] = maleCount;
         })
-        console.log("Female INFO", femaleInfo);
-        console.log("Male INFO", maleInfo);
+        // console.log("Female INFO", femaleInfo);
+        // console.log("Male INFO", maleInfo);
 
         // sort the two groups of data
 
@@ -112,7 +112,7 @@ class SpiderVis {
         vis.femaleSortable.forEach(function (d,i){
             vis.countries.push(d[0]);
         })
-        console.log("countries", vis.countries);
+        // console.log("countries", vis.countries);
 
         //select top 8 male countries based on female data
         vis.maleCountries = [];
@@ -123,7 +123,7 @@ class SpiderVis {
                 }
             })
         });
-        console.log("male country:", vis.maleCountries);
+        // console.log("male country:", vis.maleCountries);
 
         // convert back into object
         vis.objSortedFemale = {};
@@ -138,7 +138,7 @@ class SpiderVis {
 
         vis.natData.push(vis.objSortedMale, vis.objSortedFemale);
 
-        console.log("Nationality array", vis.natData);
+        // console.log("Nationality array", vis.natData);
 
 
         // create the base of the spider vis
@@ -192,7 +192,7 @@ class SpiderVis {
             // INCLUDING AMERICANS
             d3.select("#american-toggle").on("click", function (){
                 vis.change += 1;
-                console.log("button clicked");
+                // console.log("button clicked");
                 if(vis.change%2 === 0){
                     vis.natData = [];
                     vis.countries = [];
@@ -200,7 +200,7 @@ class SpiderVis {
                     vis.femaleSortable.forEach(function (d,i){
                         vis.countries.push(d[0]);
                     })
-                    console.log("countries", vis.countries);
+                    // console.log("countries", vis.countries);
 
                     //select top 8 male countries based on female data
                     vis.maleCountries = [];
@@ -225,7 +225,7 @@ class SpiderVis {
 
                     vis.natData.push(vis.objSortedMale, vis.objSortedFemale);
 
-                    console.log("Nationality array", vis.natData);
+                    // console.log("Nationality array", vis.natData);
 
                     vis.svgNew = d3.select("#spidervis").append("svg")
                         .attr("width", 800)
@@ -276,7 +276,7 @@ class SpiderVis {
                     vis.femaleSortable.forEach(function (d,i){
                         vis.countries.push(d[0]);
                     })
-                    console.log("countries", vis.countries);
+                    // console.log("countries", vis.countries);
 
                     //select top 8 male countries based on female data
                     vis.maleCountries = [];
@@ -301,7 +301,7 @@ class SpiderVis {
 
                     vis.natData.push(vis.objSortedMale, vis.objSortedFemale);
 
-                    console.log("Nationality array", vis.natData);
+                    // console.log("Nationality array", vis.natData);
 
                     // create the base of the spider vis
                     vis.svg = d3.select("#spidervis").append("svg")
@@ -427,7 +427,7 @@ class SpiderVis {
                     let coordinates = [];
                     for (var i = 0; i < 8; i++) {
                         let ft_name = vis.countries[i];
-                        console.log("ft_name", ft_name);
+                        // console.log("ft_name", ft_name);
                         let angle = (Math.PI / 2) + (2 * Math.PI * i / 8);
                         coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
                     }
@@ -438,7 +438,7 @@ class SpiderVis {
                     let d = vis.natData[i];
                     let color = vis.colors[i];
                     let coordinates = getPathCoordinates(d);
-                    console.log("coord", coordinates);
+                    // console.log("coord", coordinates);
 
                     //     //draw the path element
                     vis.svg
@@ -523,7 +523,7 @@ class SpiderVis {
                     let coordinates = [];
                     for (var i = 0; i < 8; i++) {
                         let ft_name = vis.countries[i];
-                        console.log("ft_name", ft_name);
+                        // console.log("ft_name", ft_name);
                         let angle = (Math.PI / 2) + (2 * Math.PI * i / 8);
                         coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
                     }
@@ -533,7 +533,7 @@ class SpiderVis {
                     let d = vis.natData[i];
                     let color = vis.colors[i];
                     let coordinates = getPathCoordinates(d);
-                    console.log("coord", coordinates);
+                    // console.log("coord", coordinates);
 
 
                     //     //draw the path element
