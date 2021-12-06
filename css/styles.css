@@ -345,6 +345,14 @@ ul {
     background-color: black;
     opacity: 1;
 }
+
+:root {
+    --light: 20;
+    /* the threshold at which colors are considered "light." Range: integers from 0 to 100,
+  recommended 50 - 70 */
+    --threshold: 60;
+}
+
 .cd-dot {
     position: relative;
     /* we set a top value in order to align the dot with the label. If you change label's font, you may need to change this top value*/
@@ -352,7 +360,7 @@ ul {
     height: 12px;
     width: 12px;
     border-radius: 50%;
-    background-color: #51CAEA;
+    background-color: #c6c6c6;
     -webkit-transition: -webkit-transform 0.2s, background-color 0.5s;
     -moz-transition: -moz-transform 0.2s, background-color 0.5s;
     transition: transform 0.2s, background-color 0.5s;
@@ -366,7 +374,8 @@ ul {
 
 #cd-vertical-nav .cd-label {
     position: relative;
-    color: #51CAEA;
+    color: #c6c6c6;
+    mix-blend-mode: difference;
     font-size: 21px;
     padding-top: 10px;
     padding-right: 12px;
