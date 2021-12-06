@@ -2,6 +2,8 @@
 *     class SpiderVis      *
 * * * * * * * * * * * * * */
 
+// credits to Danny's spider chart tutorial: https://yangdanny97.github.io/blog/2019/03/01/D3-Spider-Chart
+
 
 class SpiderVis {
     constructor(parentElement, _data){
