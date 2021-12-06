@@ -191,7 +191,7 @@ body {
     fill: #DEA7B8;
 }
 
-.tooltip-artvis {
+#artTooltip {
     position: absolute;
     text-align: center;
     width: 260px;
@@ -203,7 +203,7 @@ body {
     /*  pointer-events: none;	This line needs to be removed */
 }
 
-.tooltip-artvis img{
+#artTooltip img{
     width:230px;
     display: block;
     margin-left: auto;

@@ -133,8 +133,8 @@ class ArtVis {
 
         // tooltip
         vis.tooltip = d3.select("body").append('div')
-            .attr('class', "tooltip-artvis")
-            // .attr('id', 'barTooltip')
+            .attr('class', "tooltip")
+            .attr('id', 'artTooltip');
 
         // (2) Draw rectangles
         let rects = vis.svg.selectAll(".bars")
