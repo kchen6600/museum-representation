@@ -164,14 +164,14 @@ class SpiderVis {
             .attr("y", 150)
             .attr("width", 20)
             .attr("height", 20)
-            .attr("fill", "pink");
+            .attr("fill", "#89C4C2");
 
         vis.svg.append("rect")
             .attr("x", 650)
             .attr("y", 175)
             .attr("width", 20)
             .attr("height", 20)
-            .attr("fill", "orange");
+            .attr("fill", "#F5A2A2");
 
         vis.svg.append("text")
             .attr("x", 675)
@@ -249,14 +249,14 @@ class SpiderVis {
                         .attr("y", 150)
                         .attr("width", 20)
                         .attr("height", 20)
-                        .attr("fill", "pink");
+                        .attr("fill", "#89C4C2");
 
                     vis.svgNew.append("rect")
                         .attr("x", 650)
                         .attr("y", 175)
                         .attr("width", 20)
                         .attr("height", 20)
-                        .attr("fill", "orange");
+                        .attr("fill", "#F5A2A2");
 
                     vis.svgNew.append("text")
                         .attr("x", 675)
@@ -326,14 +326,14 @@ class SpiderVis {
                         .attr("y", 150)
                         .attr("width", 20)
                         .attr("height", 20)
-                        .attr("fill", "pink");
+                        .attr("fill", "#89C4C2");
 
                     vis.svg.append("rect")
                         .attr("x", 650)
                         .attr("y", 175)
                         .attr("width", 20)
                         .attr("height", 20)
-                        .attr("fill", "orange");
+                        .attr("fill", "#F5A2A2");
 
                     vis.svg.append("text")
                         .attr("x", 675)
@@ -421,7 +421,7 @@ class SpiderVis {
                 vis.line = d3.line()
                     .x(d => d.x)
                     .y(d => d.y);
-                vis.colors = ["pink", "orange"];
+                vis.colors = ["#89C4C2", "#F5A2A2"];
 
                 function getPathCoordinates(data_point) {
                     let coordinates = [];
@@ -517,7 +517,7 @@ class SpiderVis {
                 vis.line = d3.line()
                     .x(d => d.x)
                     .y(d => d.y);
-                vis.colors = ["pink", "orange"];
+                vis.colors = ["#89C4C2", "#F5A2A2"];
 
                 function getPathCoordinates(data_point) {
                     let coordinates = [];

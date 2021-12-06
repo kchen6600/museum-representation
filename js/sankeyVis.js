@@ -497,8 +497,8 @@ class SankeyVis {
             .attr("width", d => d.x1 - d.x0)
             .attr("height", d => d.y1 - d.y0)
             // .attr("fill", (d,i) => { console.log(d.id) })
-            .attr("fill", "#74cfe9")
-            .attr("opacity", 0.8)
+            .attr("fill", "#F9D4A4")
+            // .attr("opacity", 0.8)
             .attr("id", d => d.id);
 
         // add in the title for the nodes

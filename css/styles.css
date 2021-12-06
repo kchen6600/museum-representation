@@ -188,7 +188,7 @@ body {
 }
 
 .bars {
-    fill: #DEA7B8;
+    fill: #F5A2A2;
 }
 
 #artTooltip {
@@ -403,7 +403,7 @@ ul {
     /*position: absolute;*/
     /*top: 140px;*/
     /*left: 50px;*/
-    background: #f08080;
+    background: #F9D4A4;
     border-radius: 3px;
     border: none;
     color: white;

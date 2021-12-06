@@ -9,7 +9,7 @@ class BarVis {
         this.data = _data;
         this.displayData = [];
         this.filteredData = this.data[0];
-        this.colors = ["steelblue", "red"];
+        this.colors = ["#89C4C2", "#F5A2A2"];
 
         this.initVis()
     }
@@ -179,7 +179,7 @@ class BarVis {
             .enter()
             .append("rect")
             .attr("class", "male-bars")
-            .attr('fill', "steelblue")
+            .attr('fill', "#89C4C2")
             .merge(vis.barsMale)
             .attr("width", vis.x.bandwidth() / 2)
             .attr("height", function(d, i){
@@ -192,8 +192,8 @@ class BarVis {
             .on('mouseover', function(event, d){
                 d3.select(this)
                     .attr('stroke-width', '2px')
-                    .attr('stroke', 'black')
-                    .attr('fill', 'rgba(173,222,255,0.62)')
+                    // .attr('stroke', 'black')
+                    .attr('opacity', '.5')
                 vis.tooltip
                     .style("opacity", 1)
                     .style("left", event.pageX + 20 + "px")
@@ -207,7 +207,7 @@ class BarVis {
             .on('mouseout', function(event, d){
                 d3.select(this)
                     .attr('stroke-width', '0px')
-                    .attr("fill", "steelblue")
+                    .attr('opacity', '1')
                 vis.tooltip
                     .style("opacity", 0)
                     .style("left", 0)
@@ -228,7 +228,7 @@ class BarVis {
             .enter()
             .append("rect")
             .attr("class", "female-bars")
-            .attr('fill', "red")
+            .attr('fill', "#F5A2A2")
             .merge(vis.barsFemale)
             .attr("width", vis.x.bandwidth() / 2)
             .attr("height", function(d, i){
@@ -241,8 +241,8 @@ class BarVis {
             .on('mouseover', function(event, d){
                 d3.select(this)
                     .attr('stroke-width', '2px')
-                    .attr('stroke', 'black')
-                    .attr('fill', 'rgba(255,192,203,0.62)')
+                    // .attr('stroke', 'black')
+                    .attr('opacity', '.5')
                 vis.tooltip
                     .style("opacity", 1)
                     .style("left", event.pageX + 20 + "px")
@@ -256,7 +256,7 @@ class BarVis {
             .on('mouseout', function(event, d){
                 d3.select(this)
                     .attr('stroke-width', '0px')
-                    .attr("fill", "red")
+                    .attr('opacity', '1')
                 vis.tooltip
                     .style("opacity", 0)
                     .style("left", 0)

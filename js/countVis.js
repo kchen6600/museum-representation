@@ -265,7 +265,7 @@ class CountVis {
             .datum(vis.displayData)
             .attr("d", vis.malePath)
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
+            .attr("stroke", "#89C4C2")
             .attr("stroke-width", 1.5)
             .attr("clip-path", "url(#clip)");
 
@@ -273,7 +273,7 @@ class CountVis {
             .datum(vis.displayData)
             .attr("d", vis.femalePath)
             .attr("fill", "none")
-            .attr("stroke", "red")
+            .attr("stroke", "#F5A2A2")
             .attr("stroke-width", 1.5)
             .attr("clip-path", "url(#clip)");
 
