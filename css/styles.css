@@ -96,7 +96,7 @@ body {
 }
 #section1{
     height:100%;
-    padding-top: 10%;
+    padding-top: 10vh;
 }
 
 #section2{
@@ -114,7 +114,7 @@ body {
 
 #section3{
     height:120%;
-    padding-top: 1%;
+    /*padding-top: 1px;*/
 }
 
 #section4{
@@ -127,7 +127,7 @@ body {
 }
 #section5{
     height: 100%;
-    padding-top: 5%;
+    padding-top: 5vh;
 }
 #section6{
     height: 100%;
