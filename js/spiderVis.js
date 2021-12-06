@@ -144,8 +144,7 @@ class SpiderVis {
         // create the base of the spider vis
         vis.svg = d3.select("#spidervis").append("svg")
             .attr("width", 800)
-            .attr("height", 800)
-            .attr("stroke", "gray");
+            .attr("height", 800);
 
         vis.radialScale = d3.scaleLinear()
             .domain([0, 23000])
@@ -153,6 +152,37 @@ class SpiderVis {
 
         // append the ticks for the count TO BE CHANGED
         vis.ticks = [1000, 5000, 10000, 15000, 23000];
+
+        // add title
+        vis.svg.append("text")
+            .attr("x", 80)
+            .attr("y", 30)
+            .text("Distribution of Male and Female Artists Ranked by Top 8 Female Nationalities (Non American)");
+
+        vis.svg.append("rect")
+            .attr("x", 650)
+            .attr("y", 150)
+            .attr("width", 20)
+            .attr("height", 20)
+            .attr("fill", "pink");
+
+        vis.svg.append("rect")
+            .attr("x", 650)
+            .attr("y", 175)
+            .attr("width", 20)
+            .attr("height", 20)
+            .attr("fill", "orange");
+
+        vis.svg.append("text")
+            .attr("x", 675)
+            .attr("y", 165)
+            .text("male");
+
+        vis.svg.append("text")
+            .attr("x", 675)
+            .attr("y", 190)
+            .text("female");
+
 
         this.wrangleData();
     }
@@ -208,6 +238,35 @@ class SpiderVis {
 
                     // append the ticks for the count TO BE CHANGED
                     vis.ticks = [3000, 6000, 12000, 24000, 48000];
+
+                    vis.svgNew.append("text")
+                        .attr("x",100)
+                        .attr("y", 30)
+                        .text("Distribution of Male and Female Artists Ranked by Top 8 Female Nationalities");
+
+                    vis.svgNew.append("rect")
+                        .attr("x", 650)
+                        .attr("y", 150)
+                        .attr("width", 20)
+                        .attr("height", 20)
+                        .attr("fill", "pink");
+
+                    vis.svgNew.append("rect")
+                        .attr("x", 650)
+                        .attr("y", 175)
+                        .attr("width", 20)
+                        .attr("height", 20)
+                        .attr("fill", "orange");
+
+                    vis.svgNew.append("text")
+                        .attr("x", 675)
+                        .attr("y", 165)
+                        .text("male");
+
+                    vis.svgNew.append("text")
+                        .attr("x", 675)
+                        .attr("y", 190)
+                        .text("female");
                 }
                 else{
                     vis.svgNew.remove();
@@ -256,6 +315,36 @@ class SpiderVis {
 
                     // append the ticks for the count TO BE CHANGED
                     vis.ticks = [1000, 5000, 10000, 15000, 23000];
+
+                    vis.svg.append("text")
+                        .attr("x", 80)
+                        .attr("y", 30)
+                        .text("Distribution of Male and Female Artists Ranked by Top 8 Female Nationalities (Non American)");
+
+                    vis.svg.append("rect")
+                        .attr("x", 650)
+                        .attr("y", 150)
+                        .attr("width", 20)
+                        .attr("height", 20)
+                        .attr("fill", "pink");
+
+                    vis.svg.append("rect")
+                        .attr("x", 650)
+                        .attr("y", 175)
+                        .attr("width", 20)
+                        .attr("height", 20)
+                        .attr("fill", "orange");
+
+                    vis.svg.append("text")
+                        .attr("x", 675)
+                        .attr("y", 165)
+                        .text("male");
+
+                    vis.svg.append("text")
+                        .attr("x", 675)
+                        .attr("y", 190)
+                        .text("female");
+
                 }
                 vis.updateVis();
 
@@ -275,8 +364,8 @@ class SpiderVis {
                 vis.ticks.forEach(t =>
                     vis.svg
                         .append("circle")
-                        .attr("cx", 300)
-                        .attr("cy", 300)
+                        .attr("cx", 400)
+                        .attr("cy", 400)
                         .attr("fill", "none")
                         .attr("stroke", "gray")
                         .attr("opacity", 0.3)
@@ -286,8 +375,8 @@ class SpiderVis {
                 vis.ticks.forEach(t =>
                     vis.svg
                         .append("text")
-                        .attr("x", 305)
-                        .attr("y", 300 - vis.radialScale(t))
+                        .attr("x", 405)
+                        .attr("y", 400 - vis.radialScale(t))
                         .text(t.toString())
                 );
 
@@ -295,7 +384,7 @@ class SpiderVis {
                 function angleToCoordinate(angle, value) {
                     let x = Math.cos(angle) * vis.radialScale(value);
                     let y = Math.sin(angle) * vis.radialScale(value);
-                    return {"x": 300 + x, "y": 300 - y};
+                    return {"x": 400 + x, "y": 400 - y};
                 }
 
                 var value_line = d3.max(vis.ticks);
@@ -310,8 +399,8 @@ class SpiderVis {
                     //draw axis line
                     vis.svg
                         .append("line")
-                        .attr("x1", 300)
-                        .attr("y1", 300)
+                        .attr("x1", 400)
+                        .attr("y1", 400)
                         .attr("x2", line_coordinate.x)
                         .attr("y2", line_coordinate.y)
                         .attr("opacity", 0.3)
@@ -370,8 +459,8 @@ class SpiderVis {
                     vis.svgNew
                         .append("circle")
                         .style("stroke-linecap", "round")
-                        .attr("cx", 300)
-                        .attr("cy", 300)
+                        .attr("cx", 400)
+                        .attr("cy", 400)
                         .attr("fill", "none")
                         .attr("stroke", "gray")
                         .attr("opacity", 0.3)
@@ -381,8 +470,8 @@ class SpiderVis {
                 vis.ticks.forEach(t =>
                     vis.svgNew
                         .append("text")
-                        .attr("x", 305)
-                        .attr("y",  300-vis.radialScale(t))
+                        .attr("x", 405)
+                        .attr("y",  400-vis.radialScale(t))
                         .text(t.toString())
                 );
 
@@ -390,7 +479,7 @@ class SpiderVis {
                 function angleToCoordinate(angle, value) {
                     let x = Math.cos(angle) * vis.radialScale(value);
                     let y = Math.sin(angle) * vis.radialScale(value);
-                    return {"x": 300 + x, "y": 300 - y};
+                    return {"x": 400 + x, "y": 400 - y};
                 }
                 var value_line = d3.max(vis.ticks);
                 var value_label = value_line * 1.05;
@@ -405,8 +494,8 @@ class SpiderVis {
                     vis.svgNew
                         .append("line")
                         .style("stroke-linecap", "round")
-                        .attr("x1", 300)
-                        .attr("y1", 300)
+                        .attr("x1", 400)
+                        .attr("y1", 400)
                         .attr("x2", line_coordinate.x)
                         .attr("y2", line_coordinate.y)
                         .attr("opacity", 0.3)
