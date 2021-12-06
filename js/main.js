@@ -4,21 +4,26 @@ let sankeyVis;
 let spiderVis;
 let artVis;
 
-let promises = [
-    d3.json("data/Artworks.json")
-]
 
-Promise.all(promises)
-    .then(function (data){
+let url = 'https://cs171museumrepresentation.s3.us-east-2.amazonaws.com/Artworks.json';
+
+d3.json(url).then(jsonData =>{
+    console.log(jsonData);
+});
+
+fetch(url, function (d) {
+    console.log(d)
+})
+    .then(response => response.json())
+    .then(data => {
         createVis(data)
-    })
-    .catch(function(err){
-        console.log(err)
     });
+
 
 function createVis(data){
 
-    let artworkData = data[0]
+    let artworkData = []
+    artworkData.push(data);
 
     // console.log(data)
 
@@ -36,11 +41,11 @@ function createVis(data){
     }
 
     // Instantiate visualization object
-    barVis = new BarVis("barvis", data);
-    countVis = new CountVis("countvis", data, eventHandler);
-    sankeyVis = new SankeyVis("sankeyvis", data);
-    spiderVis = new SpiderVis("spidervis", data);
-    artVis = new ArtVis("artvis", data);
+    barVis = new BarVis("barvis", artworkData);
+    countVis = new CountVis("countvis", artworkData, eventHandler);
+    sankeyVis = new SankeyVis("sankeyvis", artworkData);
+    spiderVis = new SpiderVis("spidervis", artworkData);
+    artVis = new ArtVis("artvis", artworkData);
 
     eventHandler.bind("selectionChanged", function(event){
         // console.log("SELECTION CHANGED");
