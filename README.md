@@ -30,4 +30,5 @@ index.html - main html file for our website
 * Acquistion chart has a brush tooltip that one can also zoom in on to get a closer look at. The brush changes the period data one is looking at with regards to male vs female representation by department. 
 * Male vs Female Representation by Department bar chart has a tooltip that shows the exact number of pieces each bar is representing.
 * Hovering over the Gender, Nationality, and Art Classification Relationships sankey visualization focuses in on the link you are looking at.
+* Click the button to see the distribution of Female and Male artists ranked by the Top 8 Female Nationalities, including and not including americans.
 * Hovering over bars in the Top Female Artists Represented in the MoMA Collection reveals an example artwork of the artist represented.
