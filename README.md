@@ -1,7 +1,7 @@
 # Representation in Museum Collections
 *team members (The Curators):* Karen Chen, Eleanor Eng, and Cindy Tian
 
-*link to website:* [INSERT LINK HERE]
+*link to website (located in the README of our repo):* https://github.com/kchen6600/museum-representation/blob/main/README.md
 *screencast video:* https://vimeo.com/653759994
 
 ## Abstract
