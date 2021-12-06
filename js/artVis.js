@@ -114,7 +114,7 @@ class ArtVis {
 
         vis.title = vis.svg.append("text")
             .attr("class", "barchart-title")
-            .text("Top Female Artists Represented in the MoMA Collection")
+            .text("Top 15 Female Artists Represented in the MoMA Collection")
             .attr('transform', `translate(${vis.width / 2}, -5)`)
             .attr('text-anchor', 'middle');
 
